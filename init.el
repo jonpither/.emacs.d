@@ -37,6 +37,9 @@
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (ac-config-default)
+(require 'ac-slime)
+(add-hook 'slime-mode-hook 'set-up-slime-ac)
+(add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
 
 ;; hook AC into completion-at-point NOT WORKING, need SLIME AC I THINK
 ;;(defun set-auto-complete-as-completion-at-point-function ()
