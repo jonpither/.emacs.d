@@ -1,3 +1,8 @@
+(let* ((my-lisp-dir "~/.emacs.d/")
+        (default-directory my-lisp-dir))
+  (setq load-path (cons my-lisp-dir load-path))
+  (normal-top-level-add-subdirs-to-load-path))
+
 (setq frame-title-format "%b")
 (setq mac-option-modifier 'none) 
 (setq mac-command-modifier 'meta)
@@ -24,7 +29,7 @@
 ;; Key Bindings
 (global-set-key (kbd "<M-C-left>") 'previous-buffer)
 (global-set-key (kbd "<M-C-right>") 'next-buffer)
-
+(windmove-default-keybindings 'meta) ; meta L/R move between windows
 ;; Copy and paste:
 (cua-mode)
 
@@ -40,6 +45,15 @@
 (require 'ac-slime)
 (add-hook 'slime-mode-hook 'set-up-slime-ac)
 (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
+
+;; Parenthesis
+(show-paren-mode)
+;;(add-hook 'clojure-mode-hook 'highlight-parentheses-mode)
+;;(add-hook 'slime-repl-mode-hook 'highlight-parentheses-mode)
+;;(add-hook 'emacs-lisp-mode-hook  'highlight-parentheses-mode)
+;;(setq hl-paren-colors
+;;      '("orange1" "yellow1" "greenyellow" "green1"
+;;        "springgreen1" "cyan1" "slateblue1" "magenta1" "purple"))
 
 ;; hook AC into completion-at-point NOT WORKING, need SLIME AC I THINK
 ;;(defun set-auto-complete-as-completion-at-point-function ()
