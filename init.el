@@ -30,6 +30,7 @@
 (global-set-key (kbd "<M-C-left>") 'previous-buffer)
 (global-set-key (kbd "<M-C-right>") 'next-buffer)
 (windmove-default-keybindings 'meta) ; meta L/R move between windows
+
 ;; Copy and paste:
 (cua-mode)
 
@@ -37,8 +38,7 @@
 (ido-mode)
 (setq ido-enable-flex-matching t)
 
-;; Autom complete (standard) 
-;;(require 'auto-complete)  
+;; Autom complete (standard)   
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (ac-config-default)
