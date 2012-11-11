@@ -9,8 +9,10 @@
 (setq inhibit-splash-screen t)
 
 (menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
 
-; SETS UP PERFECT SIZE ON MY MAC (breaks portability of this file, could use a if switch)
+; Sets UP PERFECT SIZE ON MY MAC (breaks portability of this file, could use a if switch)
 (progn
       (set-frame-height (selected-frame) 53)
       (set-frame-width (selected-frame) 200))
