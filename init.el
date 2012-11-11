@@ -31,7 +31,10 @@
 ;; Key Bindings
 (global-set-key (kbd "<M-C-left>") 'previous-buffer)
 (global-set-key (kbd "<M-C-right>") 'next-buffer)
-(global-set-key (kbd "<C-f11>") 'ns-toggle-fullscreen)
+(global-set-key (kbd "<C-f11>") 'clojure-jack-in)
+(global-set-key (kbd "<f11>") 'ns-toggle-fullscreen)
+(global-set-key (kbd "C-c C-p") 'paredit-mode)
+(global-set-key (kbd "<C-c C-s>") 'magit-status)
 (windmove-default-keybindings 'meta) ; meta L/R move between windows
 
 ;; Copy and paste:
