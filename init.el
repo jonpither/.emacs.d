@@ -31,6 +31,7 @@
 ;; Key Bindings
 (global-set-key (kbd "<M-C-left>") 'previous-buffer)
 (global-set-key (kbd "<M-C-right>") 'next-buffer)
+(global-set-key (kbd "<C-f11>") 'ns-toggle-fullscreen)
 (windmove-default-keybindings 'meta) ; meta L/R move between windows
 
 ;; Copy and paste:
