@@ -21,7 +21,7 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 
 ;; Coloring
-(load-theme 'zenburn)
+(load-theme 'zenburn t)
 
 ;; Package manager (ELPA compatible)
 (require 'package)
@@ -62,14 +62,13 @@
 ;;  (setq completion-at-point-functions '(auto-complete)))
 ;;(add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
 
-;; SHIT ADDED BY COCOA:
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes (quote ("cf4dda59b259ca9c6214a8e9acf84bf5909c6e59" "1f392dc4316da3e648c6dc0f4aad1a87d4be556c" default))))
+ '(custom-enabled-themes (quote (zenburn)))
+ '(custom-safe-themes (quote ("cf4dda59b259ca9c6214a8e9acf84bf5909c6e59" default))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
