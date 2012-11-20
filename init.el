@@ -13,9 +13,9 @@
 (scroll-bar-mode -1)
 
 ; Sets UP PERFECT SIZE ON MY MAC (breaks portability of this file, could use a if switch)
-(progn
-      (set-frame-height (selected-frame) 53)
-      (set-frame-width (selected-frame) 200))
+;;(progn
+;;      (set-frame-height (selected-frame) 53)
+;;      (set-frame-width (selected-frame) 200))
 
 (add-to-list 'load-path "~/.emacs.d/packages/")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
@@ -54,17 +54,6 @@
 
 ;; Parenthesis
 (show-paren-mode)
-;;(add-hook 'clojure-mode-hook 'highlight-parentheses-mode)
-;;(add-hook 'slime-repl-mode-hook 'highlight-parentheses-mode)
-;;(add-hook 'emacs-lisp-mode-hook  'highlight-parentheses-mode)
-;;(setq hl-paren-colors
-;;      '("orange1" "yellow1" "greenyellow" "green1"
-;;        "springgreen1" "cyan1" "slateblue1" "magenta1" "purple"))
-
-;; hook AC into completion-at-point NOT WORKING, need SLIME AC I THINK
-;;(defun set-auto-complete-as-completion-at-point-function ()
-;;  (setq completion-at-point-functions '(auto-complete)))
-;;(add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
