@@ -3,6 +3,8 @@
   (setq load-path (cons my-lisp-dir load-path))
   (normal-top-level-add-subdirs-to-load-path))
 
+(add-to-list 'exec-path "/usr/local/git/bin/")
+
 (setq frame-title-format "%b")
 (setq mac-option-modifier 'none) 
 (setq mac-command-modifier 'meta)
