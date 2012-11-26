@@ -1,5 +1,8 @@
-*.elc
+elpa/magit-1.0.0/magit-autoloads.el
+elpa/magit-1.0.0/magit-autoloads.el
+elpa/magit-1.0.0/magit-autoloads.el
 *~
+*.elc
 auto-save-list/*
 ac-comphist.dat
 url
