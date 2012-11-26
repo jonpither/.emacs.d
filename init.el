@@ -42,6 +42,9 @@
 (add-hook 'org-shiftdown-final-hook 'windmove-down)
 (add-hook 'org-shiftright-final-hook 'windmove-right)
 
+;; C-c l/r to restore windows
+(winner-mode 1)
+
 ;; Copy and paste:
 (cua-mode)
 
