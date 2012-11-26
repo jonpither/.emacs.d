@@ -3,6 +3,7 @@
   (setq load-path (cons my-lisp-dir load-path))
   (normal-top-level-add-subdirs-to-load-path))
 
+;; OSX Path issue - todo find another way
 (add-to-list 'exec-path "/usr/local/git/bin/")
 
 (setq frame-title-format "%b")
