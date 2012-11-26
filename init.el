@@ -14,11 +14,6 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
-; Sets UP PERFECT SIZE ON MY MAC (breaks portability of this file, could use a if switch)
-;;(progn
-;;      (set-frame-height (selected-frame) 53)
-;;      (set-frame-width (selected-frame) 200))
-
 (add-to-list 'load-path "~/.emacs.d/packages/")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 
