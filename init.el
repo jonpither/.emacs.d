@@ -34,15 +34,6 @@
 (global-set-key (kbd "C-c C-p") 'paredit-mode)
 (global-set-key (kbd "C-c C-s") 'magit-status)
 
-;; Windmove (move between windows)
-(windmove-default-keybindings 'meta)
-;; Windmove clashes with org.mode, so use S instead of M-l/r
-;; See http://orgmode.org/manual/Conflicts.html
-(add-hook 'org-shiftup-final-hook 'windmove-up)
-(add-hook 'org-shiftleft-final-hook 'windmove-left)
-(add-hook 'org-shiftdown-final-hook 'windmove-down)
-(add-hook 'org-shiftright-final-hook 'windmove-right)
-
 ;; C-c l/r to restore windows
 (winner-mode 1)
 
