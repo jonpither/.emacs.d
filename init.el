@@ -60,6 +60,9 @@
 (setq auto-mode-alist (cons '("\\.markdown" . markdown-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.md" . markdown-mode) auto-mode-alist))
 
+;; Clojure mode for ClojureScript
+(add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
+
 ;; show time
 (setq display-time-24hr-format t)
 (setq display-time-load-average t)
