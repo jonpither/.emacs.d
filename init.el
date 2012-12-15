@@ -27,13 +27,13 @@
 (package-initialize)
 
 ;; Key Bindings
-(global-set-key (kbd "<M-C-left>") 'previous-buffer)
-(global-set-key (kbd "<M-C-right>") 'next-buffer)
 (global-set-key (kbd "<C-f11>") 'nrepl-jack-in)
 (global-set-key (kbd "<f11>") 'ns-toggle-fullscreen)
-(global-set-key (kbd "C-c C-p") 'paredit-mode)
 (global-set-key (kbd "C-c C-s") 'magit-status)
 (global-set-key "\C-x\C-b" 'buffer-menu)
+
+;; rgrep key binding
+(global-set-key (kbd "C-c C-f") 'rgrep)
 
 ;; C-c l/r to restore windows
 (winner-mode 1)
