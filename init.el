@@ -52,8 +52,14 @@
 
 ;; Parenthesis
 (show-paren-mode)
-
 (global-rainbow-delimiters-mode)
+
+;; Paredit
+(require 'paredit)
+(add-hook 'lisp-mode-hook 'paredit-mode)
+(add-hook 'emacs-lisp-mode-hook 'paredit-mode)
+(add-hook 'clojure-mode-hook 'paredit-mode)
+(add-hook 'nrepl-mode-hook 'enable-paredit-mode)
 
 ;; Markdown mode
 (autoload 'markdown-mode "markdown-mode.el" "Major mode for editing Markdown files" t)
