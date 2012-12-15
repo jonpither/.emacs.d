@@ -54,6 +54,12 @@
 (show-paren-mode)
 (global-rainbow-delimiters-mode)
 
+;; hl-sexp
+(require 'hl-sexp)
+(add-hook 'clojure-mode-hook 'hl-sexp-mode)
+(add-hook 'lisp-mode-hook 'hl-sexp-mode)
+(add-hook 'emacs-lisp-mode-hook 'hl-sexp-mode)
+
 ;; Paredit
 (require 'paredit)
 (add-hook 'lisp-mode-hook 'paredit-mode)
