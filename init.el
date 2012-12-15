@@ -29,7 +29,7 @@
 ;; Key Bindings
 (global-set-key (kbd "<M-C-left>") 'previous-buffer)
 (global-set-key (kbd "<M-C-right>") 'next-buffer)
-(global-set-key (kbd "<C-f11>") 'clojure-jack-in)
+(global-set-key (kbd "<C-f11>") 'nrepl-jack-in)
 (global-set-key (kbd "<f11>") 'ns-toggle-fullscreen)
 (global-set-key (kbd "C-c C-p") 'paredit-mode)
 (global-set-key (kbd "C-c C-s") 'magit-status)
@@ -45,13 +45,10 @@
 (ido-mode)
 (setq ido-enable-flex-matching t)
 
-;; Autom complete (standard)   
+;; Auto complete (standard)   
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (ac-config-default)
-(require 'ac-slime)
-(add-hook 'slime-mode-hook 'set-up-slime-ac)
-(add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
 
 ;; Parenthesis
 (show-paren-mode)
