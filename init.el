@@ -41,6 +41,10 @@
 ;; Copy and paste:
 (cua-mode)
 
+;; expand region
+(require 'expand-region)
+(global-set-key (kbd "C-'") 'er/expand-region)
+
 ;; Minibuffer completion
 (ido-mode)
 (setq ido-enable-flex-matching t)
@@ -49,6 +53,12 @@
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (ac-config-default)
+(setq ac-auto-show-menu t) ;; Always show menu
+(setq ac-dwim t) ;; Makes tab behave as you'd expect
+(setq ac-use-menu-map t)
+(setq ac-quick-help-delay 1)
+(setq ac-quick-help-height 60)
+
 
 ;; Parenthesis
 (show-paren-mode)
