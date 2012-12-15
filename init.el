@@ -49,7 +49,24 @@
 (ido-mode)
 (setq ido-enable-flex-matching t)
 
-;; Auto complete (standard)   
+;; ace jump mode major function
+(autoload
+  'ace-jump-mode
+  "ace-jump-mode"
+  "Emacs quick move minor mode"
+  t)
+(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+
+;; ace jump mode - jump back
+(autoload 'ace-jump-mode-pop-mark
+  "ace-jump-mode"
+  "Ace jump back:-)"
+  t)
+(eval-after-load "ace-jump-mode"
+  '(ace-jump-mode-enable-mark-sync))
+(define-key global-map (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
+
+;; Auto complete
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (ac-config-default)
@@ -58,7 +75,6 @@
 (setq ac-use-menu-map t)
 (setq ac-quick-help-delay 1)
 (setq ac-quick-help-height 60)
-
 
 ;; Parenthesis
 (show-paren-mode)
