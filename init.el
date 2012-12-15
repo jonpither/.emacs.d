@@ -41,6 +41,10 @@
 ;; Copy and paste:
 (cua-mode)
 
+;; undo-tree
+(require 'undo-tree)
+(global-undo-tree-mode)
+
 ;; expand region
 (require 'expand-region)
 (global-set-key (kbd "C-'") 'er/expand-region)
