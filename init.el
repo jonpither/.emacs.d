@@ -4,10 +4,10 @@
   (normal-top-level-add-subdirs-to-load-path))
 
 ;; OSX Path issue - todo find another way
-(add-to-list 'exec-path "/usr/local/git/bin/")
+;;(add-to-list 'exec-path "/usr/local/git/bin/")
 
 (setq frame-title-format "%b")
-(setq mac-option-modifier 'none) 
+(setq mac-option-modifier 'none)
 (setq mac-command-modifier 'meta)
 (setq inhibit-splash-screen t)
 
@@ -80,6 +80,13 @@
 (setq ac-quick-help-delay 1)
 (setq ac-quick-help-height 60)
 
+;; ac-slime
+(require 'ac-slime)
+(add-hook 'slime-mode-hook 'set-up-slime-ac)
+(add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
+(eval-after-load "auto-complete"
+  '(add-to-list 'ac-modes 'slime-repl-mode))
+
 (require 'ac-nrepl)
 (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
 (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
@@ -92,9 +99,14 @@
 
 ;; hl-sexp
 (require 'hl-sexp)
+
 (add-hook 'clojure-mode-hook 'hl-sexp-mode)
 (add-hook 'lisp-mode-hook 'hl-sexp-mode)
 (add-hook 'emacs-lisp-mode-hook 'hl-sexp-mode)
+
+;; highlight symbols
+(add-hook 'clojure-mode-hook 'idle-highlight-mode)
+(add-hook 'emacs-lisp-mode 'idle-highlight-mode)
 
 ;; Paredit
 (require 'paredit)
@@ -102,6 +114,7 @@
 (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 (add-hook 'clojure-mode-hook 'paredit-mode)
 (add-hook 'nrepl-mode-hook 'enable-paredit-mode)
+(add-hook 'slime-mode-hook 'set-up-slime-ac)
 
 ;; Markdown mode
 (autoload 'markdown-mode "markdown-mode.el" "Major mode for editing Markdown files" t)
@@ -115,6 +128,17 @@
 (setq display-time-24hr-format t)
 (setq display-time-load-average t)
 (display-time)
+
+;; y/n hassle
+(fset 'yes-or-no-p 'y-or-n-p)
+
+;; Dont like trailing whitespaces
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+(add-hook 'slime-connected-hook 'init-klondike-repl)
+
+;; TODO MAKE THIS HAPPEN ON STARTUP
+(set-cursor-color "LightGray")
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
