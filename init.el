@@ -19,7 +19,14 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 
 ;; Coloring
-(load-theme 'zenburn t)
+(require 'color-theme)
+(require 'color-theme-zenburn)
+(color-theme-zenburn)
+
+;; solarized if you wish..
+;;(require 'color-theme-sanityinc-solarized)
+;;(color-theme-sanityinc-solarized-light)
+;;(color-theme-sanityinc-solarized-dark)
 
 ;; Package manager (ELPA compatible)
 (require 'package)
@@ -136,20 +143,3 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (add-hook 'slime-connected-hook 'init-klondike-repl)
-
-;; TODO MAKE THIS HAPPEN ON STARTUP
-(set-cursor-color "LightGray")
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-enabled-themes (quote (zenburn)))
- '(custom-safe-themes (quote ("cf4dda59b259ca9c6214a8e9acf84bf5909c6e59" default))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
