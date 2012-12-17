@@ -141,5 +141,3 @@
 
 ;; Dont like trailing whitespaces
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-(add-hook 'slime-connected-hook 'init-klondike-repl)
