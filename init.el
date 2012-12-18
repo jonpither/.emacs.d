@@ -28,6 +28,8 @@
 ;;(color-theme-sanityinc-solarized-light)
 ;;(color-theme-sanityinc-solarized-dark)
 
+(set-face-attribute 'default nil :height 110)
+
 ;; Package manager (ELPA compatible)
 (require 'package)
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
