@@ -3,15 +3,16 @@
   (setq load-path (cons my-lisp-dir load-path))
   (normal-top-level-add-subdirs-to-load-path))
 
-;; OSX Path issue - todo find another way
-;;(add-to-list 'exec-path "/usr/local/git/bin/")
+;; Sort out the $PATH for OSX
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
 
 (setq frame-title-format "%b")
 (setq mac-option-modifier 'none)
 (setq mac-command-modifier 'meta)
 (setq inhibit-splash-screen t)
 
-(menu-bar-mode -1)
+(menu-bar-mode -1) ;; helpful sometimes to have on
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
