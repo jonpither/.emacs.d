@@ -41,7 +41,7 @@
 ;; Key Bindings
 (global-set-key (kbd "<C-f11>") 'nrepl-jack-in)
 (global-set-key (kbd "<f11>") 'ns-toggle-fullscreen)
-(global-set-key (kbd "C-c C-s") 'magit-status)
+(global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key "\C-x\C-b" 'buffer-menu)
 
 ;; rgrep key binding
