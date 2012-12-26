@@ -47,11 +47,6 @@
 ;; Font size
 (set-face-attribute 'default nil :height 110)
 
-;; Package manager (ELPA compatible)
-(require 'package)
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-(package-initialize)
-
 ;; Key Bindings
 (global-set-key (kbd "<C-f11>") 'nrepl-jack-in)
 (global-set-key (kbd "<f11>") 'ns-toggle-fullscreen)
