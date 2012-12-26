@@ -30,6 +30,7 @@
 ;;(color-theme-sanityinc-solarized-light)
 ;;(color-theme-sanityinc-solarized-dark)
 
+;; Font size
 (set-face-attribute 'default nil :height 110)
 
 ;; Package manager (ELPA compatible)
