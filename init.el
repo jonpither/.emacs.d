@@ -48,9 +48,6 @@
 ;; C-c l/r to restore windows
 (winner-mode 1)
 
-;; Copy and paste:
-(cua-mode)
-
 ;; undo-tree
 (require 'undo-tree)
 (global-undo-tree-mode)
