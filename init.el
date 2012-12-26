@@ -3,10 +3,6 @@
   (setq load-path (cons my-lisp-dir load-path))
   (normal-top-level-add-subdirs-to-load-path))
 
-;; Sort out the $PATH for OSX
-(when (memq window-system '(mac ns))
-  (exec-path-from-shell-initialize))
-
 (setq frame-title-format "%b")
 (setq mac-option-modifier 'none)
 (setq mac-command-modifier 'meta)
@@ -18,6 +14,11 @@
 
 (add-to-list 'load-path "~/.emacs.d/packages/")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+
+;; Sort out the $PATH for OSX
+(require 'exec-path-from-shell)
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
 
 ;; Coloring
 (require 'color-theme)
