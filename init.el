@@ -1,19 +1,33 @@
-(let* ((my-lisp-dir "~/.emacs.d/")
-        (default-directory my-lisp-dir))
-  (setq load-path (cons my-lisp-dir load-path))
-  (normal-top-level-add-subdirs-to-load-path))
+;; Better dead than smeg.
 
 (setq frame-title-format "%b")
 (setq mac-option-modifier 'none)
 (setq mac-command-modifier 'meta)
 (setq inhibit-splash-screen t)
 
-(menu-bar-mode -1) ;; helpful sometimes to have on
+(menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
-(add-to-list 'load-path "~/.emacs.d/packages/")
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+;; Add .emacs.d to load-path
+(setq dotfiles-dir (file-name-directory
+                    (or (buffer-file-name) load-file-name)))
+(add-to-list 'load-path dotfiles-dir)
+
+;; Add every subdirectory of ~/.emacs.d/site-lisp to the load path
+(dolist
+    (project (directory-files (concat dotfiles-dir "site-lisp") t "\\w+"))
+  (when (file-directory-p project)
+    (add-to-list 'load-path project)))
+
+;; ELPA
+(setq package-user-dir (concat dotfiles-dir "elpa"))
+(require 'package)
+(dolist (source '(("melpa" . "http://melpa.milkbox.net/packages/")
+                  ("marmalade" . "http://marmalade-repo.org/packages/")
+                  ("elpa" . "http://tromey.com/elpa/")))
+  (add-to-list 'package-archives source t))
+(package-initialize)
 
 ;; Sort out the $PATH for OSX
 (require 'exec-path-from-shell)
@@ -43,8 +57,6 @@
 (global-set-key (kbd "<f11>") 'ns-toggle-fullscreen)
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key "\C-x\C-b" 'buffer-menu)
-
-;; rgrep key binding
 (global-set-key (kbd "C-c C-f") 'rgrep)
 
 ;; C-c l/r to restore windows
