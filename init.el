@@ -1,13 +1,15 @@
+;; ----------------------
 ;; Better dead than smeg.
+;; ----------------------
+
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
 
 (setq frame-title-format "%b")
 (setq mac-option-modifier 'none)
 (setq mac-command-modifier 'meta)
 (setq inhibit-splash-screen t)
-
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
 
 ;; Add .emacs.d to load-path
 (setq dotfiles-dir (file-name-directory
@@ -69,56 +71,6 @@
 (ido-mode)
 (setq ido-enable-flex-matching t)
 
-;; ace jump mode major function
-(autoload
-  'ace-jump-mode
-  "ace-jump-mode"
-  "Emacs quick move minor mode"
-  t)
-(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
-
-;; ace jump mode - jump back
-(autoload 'ace-jump-mode-pop-mark
-  "ace-jump-mode"
-  "Ace jump back:-)"
-  t)
-(eval-after-load "ace-jump-mode"
-  '(ace-jump-mode-enable-mark-sync))
-(define-key global-map (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
-
-;; Auto complete
-(require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-(ac-config-default)
-(setq ac-auto-show-menu t) ;; Always show menu
-(setq ac-dwim t) ;; Makes tab behave as you'd expect
-(setq ac-use-menu-map t)
-(setq ac-quick-help-delay 1)
-(setq ac-quick-help-height 60)
-
-;; ac-slime
-(require 'ac-slime)
-(add-hook 'slime-mode-hook 'set-up-slime-ac)
-(add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
-(eval-after-load "auto-complete"
-  '(add-to-list 'ac-modes 'slime-repl-mode))
-
-;; ac-nrepl setup
-(require 'ac-nrepl)
-(add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
-(add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
-(eval-after-load "auto-complete"
-  '(add-to-list 'ac-modes 'nrepl-mode))
-
-(defun set-auto-complete-as-completion-at-point-function ()
-  (setq completion-at-point-functions '(auto-complete)))
-(add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
-
-(add-hook 'nrepl-mode-hook 'set-auto-complete-as-completion-at-point-function)
-(add-hook 'nrepl-interaction-mode-hook 'set-auto-complete-as-completion-at-point-function)
-
-(define-key nrepl-interaction-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc)
-
 ;; Parenthesis
 (show-paren-mode)
 (global-rainbow-delimiters-mode)
@@ -160,3 +112,7 @@
 
 ;; Dont like trailing whitespaces
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+(dolist (file '("autocomplete.el"
+		"ace-jump-mode.el"))
+  (load (concat dotfiles-dir file)))
