@@ -1,12 +1,15 @@
 ;; Auto complete
+(require 'auto-complete)
 (require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+
 (ac-config-default)
-(setq ac-auto-show-menu t) ;; Always show menu
-(setq ac-dwim t) ;; Makes tab behave as you'd expect
+(add-to-list 'ac-dictionary-directories
+	     (concat dotfiles-dir "site-lisp/auto-complete/dict"))
+
+(setq ac-auto-show-menu t)
+(setq ac-dwim t)
 (setq ac-use-menu-map t)
 (setq ac-quick-help-delay 1)
-(setq ac-quick-help-height 60)
 
 ;; ac-slime
 ;; (require 'ac-slime)
@@ -19,9 +22,11 @@
 (require 'ac-nrepl)
 (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
 (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
+
 (eval-after-load "auto-complete"
   '(add-to-list 'ac-modes 'nrepl-mode))
 
+;; hook AC into completion-at-point
 (defun set-auto-complete-as-completion-at-point-function ()
   (setq completion-at-point-functions '(auto-complete)))
 (add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
