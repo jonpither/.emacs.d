@@ -49,6 +49,9 @@
 ;; Font size
 (set-face-attribute 'default nil :height 110)
 
+;; Scrolling
+(setq scroll-step 1)
+
 ;; Key Bindings
 (global-set-key (kbd "<C-f11>") 'nrepl-jack-in)
 (global-set-key (kbd "<f11>") 'ns-toggle-fullscreen)
