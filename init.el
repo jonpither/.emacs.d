@@ -116,6 +116,7 @@
 ;; Dont like trailing whitespaces
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-(dolist (file '("autocomplete.el"
-		"ace-jump-mode.el"))
+(dolist (file '("jp-autocomplete.el"
+		"jp-ace-jump-mode.el"
+		"jp-erc.el"))
   (load (concat dotfiles-dir file)))
