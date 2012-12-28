@@ -118,5 +118,6 @@
 
 (dolist (file '("jp-autocomplete.el"
 		"jp-ace-jump-mode.el"
-		"jp-erc.el"))
+		"jp-erc.el"
+		"jp-multiple-cursors.el"))
   (load (concat dotfiles-dir file)))
