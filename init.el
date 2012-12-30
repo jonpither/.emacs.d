@@ -2,14 +2,6 @@
 ;; Better dead than smeg.
 ;; ----------------------
 
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-
-(setq frame-title-format "%b")
-(setq mac-option-modifier 'none)
-(setq mac-command-modifier 'meta)
-(setq inhibit-splash-screen t)
 
 ;; Add .emacs.d to load-path
 (setq dotfiles-dir (file-name-directory
@@ -35,22 +27,6 @@
 (require 'exec-path-from-shell)
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
-
-;; Coloring
-(require 'color-theme)
-(require 'color-theme-zenburn)
-(color-theme-zenburn)
-
-;; solarized if you wish..
-;;(require 'color-theme-sanityinc-solarized)
-;;(color-theme-sanityinc-solarized-light)
-;;(color-theme-sanityinc-solarized-dark)
-
-;; Font size
-(set-face-attribute 'default nil :height 110)
-
-;; Scrolling
-(setq scroll-step 1)
 
 ;; Key Bindings
 (global-set-key (kbd "<C-f11>") 'nrepl-jack-in)
@@ -108,14 +84,6 @@
 ;; Clojure mode for ClojureScript
 (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
 
-;; show time
-(setq display-time-24hr-format t)
-(setq display-time-load-average t)
-(display-time)
-
-;; y/n hassle
-(fset 'yes-or-no-p 'y-or-n-p)
-
 ;; Dont like trailing whitespaces
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
@@ -123,5 +91,6 @@
 		"jp-ace-jump-mode.el"
 		"jp-erc.el"
 		"jp-multiple-cursors.el"
-		"jp-html"))
+		"jp-html"
+		"jp-lnf.el"))
   (load (concat dotfiles-dir file)))
