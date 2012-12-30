@@ -16,3 +16,6 @@
 [submodule "site-lisp/clojure-mode"]
 	path = site-lisp/clojure-mode
 	url = git@github.com:technomancy/clojure-mode.git
+[submodule "site-lisp/web-mode"]
+	path = site-lisp/web-mode
+	url = https://github.com/fxbois/web-mode
