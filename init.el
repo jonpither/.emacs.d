@@ -42,6 +42,10 @@
 (require 'undo-tree)
 (global-undo-tree-mode)
 
+;; Shows the kill ring
+(require 'browse-kill-ring)
+(browse-kill-ring-default-keybindings)
+
 ;; expand region
 (require 'expand-region)
 (global-set-key (kbd "C-'") 'er/expand-region)
