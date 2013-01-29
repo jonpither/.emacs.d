@@ -11,8 +11,8 @@
 (require 'color-theme)
 
 ;; Zenburn
-;;(require 'color-theme-zenburn)
-;;(color-theme-zenburn)
+;;(require 'zenburn-theme)
+;;(load-theme 'zenburn t)
 
 ;; Solarized if you wish..
 ;;(require 'color-theme-sanityinc-solarized)
@@ -21,7 +21,8 @@
 
 ;; Currently I'm using Tomorrow (starker contrast)
 (require 'color-theme-sanityinc-tomorrow)
-(color-theme-sanityinc-tomorrow-bright)
+(color-theme-sanityinc-tomorrow-night)
+;;(color-theme-sanityinc-tomorrow-bright)
 
 ;; Font size
 (set-face-attribute 'default nil :height 110)

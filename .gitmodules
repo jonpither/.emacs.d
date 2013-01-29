@@ -22,3 +22,6 @@
 [submodule "site-lisp/browse-kill-ring"]
 	path = site-lisp/browse-kill-ring
 	url = https://github.com/browse-kill-ring/browse-kill-ring.git
+[submodule "site-lisp/zenburn"]
+	path = site-lisp/zenburn
+	url = https://github.com/bbatsov/zenburn-emacs
