@@ -9,13 +9,19 @@
 
 ;; Coloring
 (require 'color-theme)
-(require 'color-theme-zenburn)
-(color-theme-zenburn)
 
-;; solarized if you wish..
+;; Zenburn
+;;(require 'color-theme-zenburn)
+;;(color-theme-zenburn)
+
+;; Solarized if you wish..
 ;;(require 'color-theme-sanityinc-solarized)
 ;;(color-theme-sanityinc-solarized-light)
 ;;(color-theme-sanityinc-solarized-dark)
+
+;; Currently I'm using Tomorrow (starker contrast)
+(require 'color-theme-sanityinc-tomorrow)
+(color-theme-sanityinc-tomorrow-bright)
 
 ;; Font size
 (set-face-attribute 'default nil :height 110)
