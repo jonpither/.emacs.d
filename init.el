@@ -56,7 +56,7 @@
 
 ;; Parenthesis
 (show-paren-mode)
-(global-rainbow-delimiters-mode)
+;;(global-rainbow-delimiters-mode)
 
 ;; hl-sexp
 (require 'hl-sexp)
