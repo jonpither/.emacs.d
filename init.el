@@ -89,6 +89,7 @@
 
 ;; Clojure mode for ClojureScript
 (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
+(add-to-list 'auto-mode-alist '("\.dtm$" . clojure-mode))
 
 ;; Dont like trailing whitespaces
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
