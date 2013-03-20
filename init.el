@@ -78,6 +78,9 @@
 
 (setq nrepl-history-file "~/.emacs.d/nrepl-history")
 
+(setq nrepl-popup-stacktraces nil)
+(setq nrepl-popup-stacktraces-in-repl t)
+
 ;; eldoc
 (add-hook 'nrepl-interaction-mode-hook
   'nrepl-turn-on-eldoc-mode)
