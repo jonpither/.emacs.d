@@ -35,6 +35,11 @@
 (global-set-key "\C-x\C-b" 'buffer-menu)
 (global-set-key (kbd "C-c C-f") 'rgrep)
 
+(savehist-mode t)
+
+;; Refresh buffers when files change
+(global-auto-revert-mode t)
+
 ;; C-c l/r to restore windows
 (winner-mode 1)
 
