@@ -3,8 +3,8 @@
 ;;; Code:
 
 
-;;;### (autoloads (midje-mode) "midje-mode" "midje-mode.el" (20807
-;;;;;;  8451))
+;;;### (autoloads (midje-mode) "midje-mode" "midje-mode.el" (20826
+;;;;;;  54548))
 ;;; Generated autoloads from midje-mode.el
 
 (autoload 'midje-mode "midje-mode" "\
@@ -22,7 +22,7 @@ Enable midje-mode if the current buffer contains a \"midje.\" string." (let ((re
 ;;;***
 
 ;;;### (autoloads nil nil ("clojure-jump-to-file.el" "midje-mode-pkg.el"
-;;;;;;  "midje-mode-praise.el") (20807 8451 829892))
+;;;;;;  "midje-mode-praise.el") (20826 54548 869928))
 
 ;;;***
 
