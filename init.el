@@ -37,6 +37,9 @@
 
 (savehist-mode t)
 
+;; http://castyour.net/keep-emacs-pooping-files-about
+(setq backup-inhibited 'anyvaluebutnil )
+
 ;; Refresh buffers when files change
 (global-auto-revert-mode t)
 
