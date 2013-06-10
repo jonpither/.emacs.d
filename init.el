@@ -117,6 +117,13 @@
                                                (match-end 1) "∘")
                                nil))))))
 
+(eval-after-load 'clojure-mode
+  '(font-lock-add-keywords
+    'clojure-mode `(("(\\(fn\\)[\[[:space:]]"
+                     (0 (progn (compose-region (match-beginning 1)
+                                               (match-end 1) "λ")
+                               nil))))))
+
 ;; Dont like trailing whitespaces
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
@@ -127,3 +134,17 @@
 		"jp-html"
 		"jp-lnf.el"))
   (load (concat dotfiles-dir file)))
+
+ (setq ispell-program-name "aspell")
+
+(setq ispell-dictionary-alist
+      '((nil
+	 "[A-Za-z]" "[^A-Za-z]" "[']" nil
+	 ("-B" "-d" "english" "--dict-dir"
+	  "/Library/Application Support/cocoAspell/aspell6-en-6.0-0")
+	 nil iso-8859-1)))
+
+;; Project specific hack for now (REMOVE IF YOU'RE PILLAGING THIS CONFIG)
+(setenv "CLJ_FE_ZK_ROOT" "clj-fe-jon")
+
+(visual-line-mode)
