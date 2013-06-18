@@ -110,7 +110,4 @@
 	  "/Library/Application Support/cocoAspell/aspell6-en-6.0-0")
 	 nil iso-8859-1)))
 
-;; Project specific hack for now (REMOVE IF YOU'RE PILLAGING THIS CONFIG)
-(setenv "CLJ_FE_ZK_ROOT" "clj-fe-jon")
-
 (visual-line-mode -1)
