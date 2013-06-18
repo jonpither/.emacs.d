@@ -88,6 +88,10 @@
 (setq auto-mode-alist (cons '("\\.markdown" . markdown-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.md" . markdown-mode) auto-mode-alist))
 
+;; Js2 mode for JS
+(require 'js2-mode)
+(setq auto-mode-alist (cons '("\\.js" . js2-mode) auto-mode-alist))
+
 ;; Dont like trailing whitespaces
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
