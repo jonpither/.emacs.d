@@ -62,12 +62,10 @@
 (setq ido-enable-flex-matching t)
 
 ;; Parenthesis
-(show-paren-mode)
-;;(global-rainbow-delimiters-mode)
+(show-paren-mode 1)
 
 ;; hl-sexp
 (require 'hl-sexp)
-
 (add-hook 'clojure-mode-hook 'hl-sexp-mode)
 (add-hook 'lisp-mode-hook 'hl-sexp-mode)
 (add-hook 'emacs-lisp-mode-hook 'hl-sexp-mode)
@@ -105,7 +103,7 @@
 		"jp-nrepl.el"))
   (load (concat dotfiles-dir file)))
 
- (setq ispell-program-name "aspell")
+(setq ispell-program-name "aspell")
 
 (setq ispell-dictionary-alist
       '((nil
