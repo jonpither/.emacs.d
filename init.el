@@ -29,7 +29,6 @@
   (exec-path-from-shell-initialize))
 
 ;; Key Bindings
-(global-set-key (kbd "<C-f11>") 'nrepl-jack-in)
 (global-set-key (kbd "<f11>") 'ns-toggle-fullscreen)
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key "\C-x\C-b" 'buffer-menu)
@@ -84,15 +83,6 @@
 (add-hook 'clojure-mode-hook 'paredit-mode)
 (add-hook 'nrepl-mode-hook 'enable-paredit-mode)
 
-(setq nrepl-history-file "~/.emacs.d/nrepl-history")
-
-(setq nrepl-popup-stacktraces nil)
-(setq nrepl-popup-stacktraces-in-repl t)
-
-;; eldoc
-(add-hook 'nrepl-interaction-mode-hook
-  'nrepl-turn-on-eldoc-mode)
-
 ;; Markdown mode
 (autoload 'markdown-mode "markdown-mode.el" "Major mode for editing Markdown files" t)
 (setq auto-mode-alist (cons '("\\.markdown" . markdown-mode) auto-mode-alist))
@@ -132,7 +122,8 @@
 		"jp-erc.el"
 		"jp-multiple-cursors.el"
 		"jp-html"
-		"jp-lnf.el"))
+		"jp-lnf.el"
+		"jp-nrepl.el"))
   (load (concat dotfiles-dir file)))
 
  (setq ispell-program-name "aspell")
