@@ -1,3 +1,5 @@
+;; Pillaged from https://bitbucket.org/DerGuteMoritz/emacs.d
+
 (defun nrepl-connection-infos (connection-buffer)
   (with-current-buffer (get-buffer connection-buffer)
     nrepl-endpoint))
