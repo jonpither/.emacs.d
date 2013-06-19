@@ -112,4 +112,8 @@
 	  "/Library/Application Support/cocoAspell/aspell6-en-6.0-0")
 	 nil iso-8859-1)))
 
-(visual-line-mode nil)
+(setq auto-mode-alist (cons '("\\.md" . flyspell-mode) auto-mode-alist))
+
+;; Visual line mode
+(add-hook 'markdown-mode-hook 'visual-line-mode)
+(add-hook 'org-mode-hook 'visual-line-mode)
