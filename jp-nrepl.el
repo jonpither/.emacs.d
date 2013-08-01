@@ -1,5 +1,9 @@
 ;; Pillaged from https://bitbucket.org/DerGuteMoritz/emacs.d
 
+(defun nrepl-connection-namespace ()
+  (with-current-buffer (get-buffer (nrepl-current-connection-buffer))
+    nrepl-buffer-ns))
+
 (defun nrepl-connection-infos (connection-buffer)
   (with-current-buffer (get-buffer connection-buffer)
     nrepl-endpoint))
@@ -11,16 +15,21 @@
   (append (rest connection-list)
           (list (first connection-list))))
 
-(defun nrepl-show-current-connection ()
+(defun nrepl-connection-msg ()
   (apply #'message
-         "Active nrepl connection: Host=%s Port=%s"
+         "Active nrepl connection: Namespace=%s Host=%s Port=%s"
+	 (nrepl-connection-namespace)
          (nrepl-current-connection-infos)))
 
 (defun nrepl-switch-to-next-connection ()
   (interactive)
   (setq nrepl-connection-list
         (nrepl-rotate-connection-list nrepl-connection-list))
-  (nrepl-show-current-connection))
+  (nrepl-connection-msg))
+
+(defun nrepl-show-current-connection ()
+  (interactive)
+  (nrepl-connection-msg))
 
 (setq nrepl-history-file "~/.emacs.d/nrepl-history")
 
@@ -31,6 +40,8 @@
 (add-hook 'nrepl-interaction-mode-hook
   'nrepl-turn-on-eldoc-mode)
 
-(global-set-key (kbd "<C-f11>") 'nrepl-jack-in)
-(global-set-key (kbd "<C-f10>") 'nrepl-switch-to-next-connection)
-(global-set-key (kbd "C-c C-x n") 'nrepl-switch-to-next-connection)
+(global-set-key (kbd "C-c n j") 'nrepl-jack-in)
+(global-set-key (kbd "C-c n c") 'nrepl-close)
+(global-set-key (kbd "C-c n q") 'nrepl-quit)
+(global-set-key (kbd "C-c n d") 'nrepl-show-current-connection)
+(global-set-key (kbd "C-c n n") 'nrepl-switch-to-next-connection)
