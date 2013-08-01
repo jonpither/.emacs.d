@@ -45,3 +45,4 @@
 (global-set-key (kbd "C-c n q") 'nrepl-quit)
 (global-set-key (kbd "C-c n d") 'nrepl-show-current-connection)
 (global-set-key (kbd "C-c n n") 'nrepl-switch-to-next-connection)
+(global-set-key (kbd "C-c n p") 'nrepl-toggle-pretty-printing)
