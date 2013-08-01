@@ -2,7 +2,9 @@
 
 (defun nrepl-connection-namespace ()
   (with-current-buffer (get-buffer (nrepl-current-connection-buffer))
-    nrepl-buffer-ns))
+;;    nrepl-project-dir
+    nrepl-buffer-ns
+    ))
 
 (defun nrepl-connection-infos (connection-buffer)
   (with-current-buffer (get-buffer connection-buffer)
@@ -17,7 +19,7 @@
 
 (defun nrepl-connection-msg ()
   (apply #'message
-         "Active nrepl connection: Namespace=%s Host=%s Port=%s"
+         "Active nrepl connection: %s, %s:%s"
 	 (nrepl-connection-namespace)
          (nrepl-current-connection-infos)))
 
