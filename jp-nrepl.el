@@ -1,10 +1,12 @@
-;; Pillaged from https://bitbucket.org/DerGuteMoritz/emacs.d
+;; Pillaged to an extent from https://bitbucket.org/DerGuteMoritz/emacs.d
 
 (defun nrepl-connection-namespace ()
   (with-current-buffer (get-buffer (nrepl-current-connection-buffer))
-;;    nrepl-project-dir
-    nrepl-buffer-ns
-    ))
+    (if (string-match "/[^/]*?/$" nrepl-project-dir)
+	(format "%s:%s"
+		(replace-regexp-in-string
+		 "/$" "" (substring nrepl-project-dir (+ 1 (string-match "/[^/]*?/$" nrepl-project-dir)))) nrepl-buffer-ns)
+      nrepl-project-dir)))
 
 (defun nrepl-connection-infos (connection-buffer)
   (with-current-buffer (get-buffer connection-buffer)
