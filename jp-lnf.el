@@ -25,7 +25,7 @@
 ;;(color-theme-sanityinc-tomorrow-bright)
 
 ;; Font size
-(set-face-attribute 'default nil :height 150)
+(set-face-attribute 'default nil :height 170)
 
 ;; Scrolling
 (setq scroll-step 1)
@@ -37,3 +37,6 @@
 
 ;; y/n hassle
 (fset 'yes-or-no-p 'y-or-n-p)
+
+(require 'golden-ratio)
+(golden-ratio-mode 1)
