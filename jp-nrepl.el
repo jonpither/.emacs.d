@@ -50,23 +50,6 @@
      (pop-to-buffer buf)
      buf)))
 
-(defun nrepl-switch-to-relevant-buffer ()
-  "Switch to relevant nrepl buffer based on the current buffer"
-  (interactive)
-  (let ((foo (nrepl-project-directory-for (nrepl-current-dir))))
-    (if foo
-	(progn
-	  (lexical-let ((buf (first (remove-if-not
-				     (lambda (c)
-				       (equal foo
-					      (with-current-buffer (get-buffer c)
-						nrepl-project-dir)))
-				     nrepl-connection-list))))
-	    (setq nrepl-connection-list
-		  (cons buf (delq buf nrepl-connection-list))))
-	  (nrepl-switch-to-repl-buffer nil))
-      (message "Not in an NREPL project dir"))))
-
 (setq nrepl-history-file "~/.emacs.d/nrepl-history")
 
 (nrepl-project-directory-for (nrepl-current-dir))
