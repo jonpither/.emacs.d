@@ -1,6 +1,6 @@
 [submodule "site-lisp/nrepl"]
 	path = site-lisp/nrepl
-	url = https://github.com/jonpither/nrepl.el.git
+	url = https://github.com/clojure-emacs/nrepl.el.git
 [submodule "site-lisp/ac-nrepl"]
 	path = site-lisp/ac-nrepl
 	url = https://github.com/purcell/ac-nrepl.git
