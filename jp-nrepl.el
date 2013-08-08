@@ -2,11 +2,12 @@
 
 (defun nrepl-connection-namespace ()
   (with-current-buffer (get-buffer (nrepl-current-connection-buffer))
-    (if (string-match "/[^/]*?/$" nrepl-project-dir)
-	(format "%s:%s"
-		(replace-regexp-in-string
-		 "/$" "" (substring nrepl-project-dir (+ 1 (string-match "/[^/]*?/$" nrepl-project-dir)))) nrepl-buffer-ns)
-      nrepl-project-dir)))
+    (if nrepl-project-dir
+	(if (string-match "/[^/]*?/$" nrepl-project-dir)
+	    (format "%s:%s"
+		    (replace-regexp-in-string
+		     "/$" "" (substring nrepl-project-dir (+ 1 (string-match "/[^/]*?/$" nrepl-project-dir)))) nrepl-buffer-ns)
+	  nrepl-project-dir))))
 
 (defun nrepl-connection-infos (connection-buffer)
   (with-current-buffer (get-buffer connection-buffer)
@@ -50,3 +51,4 @@
 (global-set-key (kbd "C-c n d") 'nrepl-show-current-connection)
 (global-set-key (kbd "C-c n n") 'nrepl-switch-to-next-connection)
 (global-set-key (kbd "C-c n p") 'nrepl-toggle-pretty-printing)
+(global-set-key (kbd "C-c n s") 'nrepl-switch-to-repl-buffer)
