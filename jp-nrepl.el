@@ -1,13 +1,15 @@
-;; Pillaged to an extent from https://bitbucket.org/DerGuteMoritz/emacs.d
+(defun extract-project-name-from-dir (project-dir)
+  (if (string-match "/[^/]*?/$" project-dir)
+      (format "%s"
+	      (replace-regexp-in-string
+	       "/$" "" (substring project-dir (+ 1 (string-match "/[^/]*?/$" project-dir)))))
+    project-dir))
 
 (defun nrepl-connection-namespace ()
   (with-current-buffer (get-buffer (nrepl-current-connection-buffer))
-    (if nrepl-project-dir
-	(if (string-match "/[^/]*?/$" nrepl-project-dir)
-	    (format "%s:%s"
-		    (replace-regexp-in-string
-		     "/$" "" (substring nrepl-project-dir (+ 1 (string-match "/[^/]*?/$" nrepl-project-dir)))) nrepl-buffer-ns)
-	  nrepl-project-dir))))
+    (format "%s:%s"
+	    (extract-project-name-from-dir nrepl-project-dir)
+	    nrepl-buffer-ns)))
 
 (defun nrepl-connection-infos (connection-buffer)
   (with-current-buffer (get-buffer connection-buffer)
@@ -35,6 +37,18 @@
 (defun nrepl-show-current-connection ()
   (interactive)
   (nrepl-connection-msg))
+
+(defun nrepl-create-repl-buffer (process)
+  "Create a repl buffer for PROCESS."
+  (nrepl-init-repl-buffer
+   process
+   (let ((buf (generate-new-buffer-name
+	       (format "*nrepl-%s*"
+		       (with-current-buffer
+			   (get-buffer (nrepl-current-connection-buffer))
+			 (extract-project-name-from-dir nrepl-project-dir))))))
+     (pop-to-buffer buf)
+     buf)))
 
 (setq nrepl-history-file "~/.emacs.d/nrepl-history")
 
