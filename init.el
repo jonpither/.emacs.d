@@ -112,6 +112,8 @@
 	  "/Library/Application Support/cocoAspell/aspell6-en-6.0-0")
 	 nil iso-8859-1)))
 
+(setq-default markdown-command "pandoc -S -s --self-contained -f markdown -t html5 ")
+
 (add-hook 'markdown-mode-hook 'flyspell-mode)
 
 ;; Visual line mode
