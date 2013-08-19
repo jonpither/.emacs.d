@@ -1,7 +1,3 @@
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-
 (setq frame-title-format "%b")
 (setq mac-option-modifier 'none)
 (setq mac-command-modifier 'meta)
@@ -25,7 +21,7 @@
 ;;(color-theme-sanityinc-tomorrow-bright)
 
 ;; Font size
-(set-face-attribute 'default nil :height 170)
+(set-face-attribute 'default nil :height 130)
 
 ;; Scrolling
 (setq scroll-step 1)

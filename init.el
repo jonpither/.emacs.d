@@ -31,7 +31,6 @@
 ;; Key Bindings
 (global-set-key (kbd "<f11>") 'ns-toggle-fullscreen)
 (global-set-key (kbd "C-x g") 'magit-status)
-(global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-c C-f") 'rgrep)
 
 (savehist-mode t)
@@ -56,20 +55,6 @@
 ;; expand region
 (require 'expand-region)
 (global-set-key (kbd "C-'") 'er/expand-region)
-
-;; Minibuffer completion
-(ido-mode)
-(setq ido-enable-flex-matching t)
-
-(require 'uniquify)
-(setq uniquify-buffer-name-style 'forward)
-
-(require 'saveplace)
-(setq-default save-place t)
-(setq save-place-file (concat user-emacs-directory "places"))
-
-;; Parenthesis
-(show-paren-mode 1)
 
 ;; hl-sexp
 (require 'hl-sexp)
@@ -107,7 +92,8 @@
 		"jp-html"
 		"jp-lnf.el"
 		"jp-clojure.el"
-		"jp-nrepl.el"))
+		"jp-nrepl.el"
+		"better-defaults.el"))
   (load (concat dotfiles-dir file)))
 
 (setq ispell-program-name "aspell")
