@@ -31,7 +31,7 @@
 ;; Key Bindings
 (global-set-key (kbd "<f11>") 'ns-toggle-fullscreen)
 (global-set-key (kbd "C-x g") 'magit-status)
-(global-set-key "\C-x\C-b" 'buffer-menu)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-c C-f") 'rgrep)
 
 (savehist-mode t)
