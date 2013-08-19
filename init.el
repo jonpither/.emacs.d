@@ -61,6 +61,9 @@
 (ido-mode)
 (setq ido-enable-flex-matching t)
 
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'forward)
+
 ;; Parenthesis
 (show-paren-mode 1)
 
