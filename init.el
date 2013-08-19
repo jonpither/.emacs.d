@@ -2,11 +2,12 @@
 ;; Better dead than smeg.
 ;; ----------------------
 
-
 ;; Add .emacs.d to load-path
 (setq dotfiles-dir (file-name-directory
                     (or (buffer-file-name) load-file-name)))
 (add-to-list 'load-path dotfiles-dir)
+
+(require 'better-defaults)
 
 ;; Add every subdirectory of ~/.emacs.d/site-lisp to the load path
 (dolist
@@ -92,8 +93,7 @@
 		"jp-html"
 		"jp-lnf.el"
 		"jp-clojure.el"
-		"jp-nrepl.el"
-		"better-defaults.el"))
+		"jp-nrepl.el"))
   (load (concat dotfiles-dir file)))
 
 (setq ispell-program-name "aspell")
