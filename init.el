@@ -7,8 +7,6 @@
                     (or (buffer-file-name) load-file-name)))
 (add-to-list 'load-path dotfiles-dir)
 
-(require 'better-defaults)
-
 ;; Add every subdirectory of ~/.emacs.d/site-lisp to the load path
 (dolist
     (project (directory-files (concat dotfiles-dir "site-lisp") t "\\w+"))
@@ -22,7 +20,10 @@
                   ("marmalade" . "http://marmalade-repo.org/packages/")
                   ("elpa" . "http://tromey.com/elpa/")))
   (add-to-list 'package-archives source t))
+
 (package-initialize)
+
+(require 'better-defaults)
 
 ;; Sort out the $PATH for OSX
 (require 'exec-path-from-shell)
@@ -31,7 +32,6 @@
 
 ;; Key Bindings
 (global-set-key (kbd "<f11>") 'ns-toggle-fullscreen)
-(global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key (kbd "C-c C-f") 'rgrep)
 
 (savehist-mode t)
@@ -93,7 +93,8 @@
 		"jp-html"
 		"jp-lnf.el"
 		"jp-clojure.el"
-		"jp-nrepl.el"))
+		"jp-nrepl.el"
+                "jp-magit.el"))
   (load (concat dotfiles-dir file)))
 
 (setq ispell-program-name "aspell")
