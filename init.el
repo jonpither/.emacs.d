@@ -119,3 +119,8 @@
 ;; Visual line mode
 (add-hook 'markdown-mode-hook 'visual-line-mode)
 (add-hook 'org-mode-hook 'visual-line-mode)
+
+(defun recompile-init ()
+  "Byte-compile all your dotfiles again."
+  (interactive)
+  (byte-recompile-directory dotfiles-dir 0))
