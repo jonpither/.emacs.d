@@ -14,13 +14,13 @@
 
 (defun nrepl-ido-fns-form (ns)
   "Construct a Clojure form for ido read using NS."
-  (message "form-x")
   (format "(let [fn-pred (fn [[k v]] (and (fn? (.get v)) (not (re-find #\"clojure.\" (str v)))))]
-              (map (comp name key)
-                   (filter fn-pred
-                       (concat
-                         (ns-interns '%s)
-                         (ns-refers '%s)))))" ns ns))
+              (sort
+                (map (comp name key)
+                     (filter fn-pred
+                         (concat
+                           (ns-interns '%s)
+                           (ns-refers '%s))))))" ns ns))
 
 (defun nrepl-ido-read-fns-new (ns ido-callback)
   "Perform ido read var in NS using IDO-CALLBACK."
