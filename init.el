@@ -2,19 +2,16 @@
 ;; Better dead than smeg.
 ;; ----------------------
 
-;; Add .emacs.d to load-path
-(setq dotfiles-dir (file-name-directory
-                    (or (buffer-file-name) load-file-name)))
-(add-to-list 'load-path dotfiles-dir)
+(add-to-list 'load-path user-emacs-directory)
 
 ;; Add every subdirectory of ~/.emacs.d/site-lisp to the load path
 (dolist
-    (project (directory-files (concat dotfiles-dir "site-lisp") t "\\w+"))
+    (project (directory-files (concat user-emacs-directory "site-lisp") t "\\w+"))
   (when (file-directory-p project)
     (add-to-list 'load-path project)))
 
 ;; ELPA
-(setq package-user-dir (concat dotfiles-dir "elpa"))
+(setq package-user-dir (concat user-emacs-directory "elpa"))
 (require 'package)
 (dolist (source '(("melpa" . "http://melpa.milkbox.net/packages/")
                   ("marmalade" . "http://marmalade-repo.org/packages/")
@@ -95,7 +92,7 @@
 		"jp-clojure.el"
 		"jp-nrepl.el"
                 "jp-magit.el"))
-  (load (concat dotfiles-dir file)))
+  (load (concat user-emacs-directory file)))
 
 (setq ispell-program-name "aspell")
 
@@ -117,4 +114,4 @@
 (defun recompile-init ()
   "Byte-compile all your dotfiles again."
   (interactive)
-  (byte-recompile-directory dotfiles-dir 0))
+  (byte-recompile-directory user-emacs-directory 0))
