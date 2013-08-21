@@ -22,11 +22,6 @@
 
 (require 'better-defaults)
 
-;; Sort out the $PATH for OSX
-(require 'exec-path-from-shell)
-(when (memq window-system '(mac ns))
-  (exec-path-from-shell-initialize))
-
 ;; Key Bindings
 (global-set-key (kbd "<f11>") 'ns-toggle-fullscreen)
 (global-set-key (kbd "C-c C-f") 'rgrep)
@@ -91,7 +86,8 @@
 		"jp-lnf.el"
 		"jp-clojure.el"
 		"jp-nrepl.el"
-                "jp-magit.el"))
+                "jp-magit.el"
+                "jp-osx.el"))
   (load (concat user-emacs-directory file)))
 
 (setq ispell-program-name "aspell")
