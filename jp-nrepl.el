@@ -13,7 +13,7 @@
     (nrepl-replace-input (format "(%s)" m))))
 
 (defun nrepl-ido-fns-form (ns)
-  "Construct a Clojure form for ido read using NS."
+  "Construct a Clojure form for reading fns using supplied NS."
   (format "(let [fn-pred (fn [[k v]] (and (fn? (.get v)) (not (re-find #\"clojure.\" (str v)))))]
               (sort
                 (map (comp name key)
@@ -22,8 +22,8 @@
                            (ns-interns '%s)
                            (ns-refers '%s))))))" ns ns))
 
-(defun nrepl-ido-read-fns-new (ns ido-callback)
-  "Perform ido read var in NS using IDO-CALLBACK."
+(defun nrepl-ido-read-fns (ns ido-callback)
+  "Perform ido read fns in NS using supplied IDO-CALLBACK."
   ;; Have to be stateful =(
   (setq nrepl-ido-ns ns)
   (interactive)
@@ -33,8 +33,11 @@
                      (nrepl-current-tooling-session)))
 
 (defun nrepl-load-fn-into-repl-buffer ()
+  "Browse functions available in current nREPL buffer using ido.
+Once selected, the name of the fn will appear in the repl buffer in parens
+ready to call."
   (interactive)
-  (nrepl-ido-read-fns-new (nrepl-current-ns) 'write-fn-into-buffer))
+  (nrepl-ido-read-fns (nrepl-current-ns) 'write-fn-into-buffer))
 
 (global-set-key (kbd "C-c n j") 'nrepl-jack-in)
 (global-set-key (kbd "C-c n c") 'nrepl-close)
