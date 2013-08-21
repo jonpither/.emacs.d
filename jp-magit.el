@@ -1,6 +1,8 @@
 ;; Taken from magnars - what a dude
 ;; https://github.com/magnars/.emacs.d/blob/master/setup-magit.el
 
+(require 'magit)
+
 ;; Magit colouring, starker
 (set-face-background 'magit-item-highlight "#121212")
 (set-face-background 'diff-file-header "#121212")
