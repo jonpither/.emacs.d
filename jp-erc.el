@@ -7,5 +7,5 @@
 (setq erc-autojoin-channels-alist
           '(("freenode.net" "#emacs" "#clojure" "#leiningen")))
 
-(when (file-exists-p (concat dotfiles-dir ".erc-auth"))
-  (load-file (concat dotfiles-dir ".erc-auth")))
+(when (file-exists-p (concat user-emacs-directory ".erc-auth"))
+  (load-file (concat user-emacs-directory ".erc-auth")))

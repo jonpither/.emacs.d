@@ -4,7 +4,7 @@
 
 (ac-config-default)
 (add-to-list 'ac-dictionary-directories
-	     (concat dotfiles-dir "site-lisp/auto-complete/dict"))
+	     (concat user-emacs-directory "site-lisp/auto-complete/dict"))
 
 (setq ac-auto-show-menu t)
 (setq ac-dwim t)
