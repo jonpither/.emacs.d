@@ -24,9 +24,6 @@
 ;; y/n hassle
 (fset 'yes-or-no-p 'y-or-n-p)
 
-(require 'golden-ratio)
-(golden-ratio-mode 1)
-
 ;; http://whattheemacsd.com/key-bindings.el-03.html
 (global-set-key (kbd "M-j")
             (lambda ()
