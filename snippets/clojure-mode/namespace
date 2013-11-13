@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: namespace
+# key: ns
+# --
+(ns `(clojure-expected-ns)`)$0

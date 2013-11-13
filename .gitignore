@@ -12,3 +12,5 @@ history
 .cask
 /bookmarks
 /places
+/target/repl-port
+/tramp
