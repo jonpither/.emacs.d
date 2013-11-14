@@ -87,7 +87,8 @@
 		"jp-clojure.el"
 		"jp-nrepl.el"
                 "jp-magit.el"
-                "jp-osx.el"))
+                "jp-osx.el"
+                "jp-snippets.el"))
   (load (concat user-emacs-directory file)))
 
 (setq ispell-program-name "aspell")
