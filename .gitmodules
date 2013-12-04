@@ -1,24 +1,6 @@
 [submodule "site-lisp/nrepl"]
 	path = site-lisp/nrepl
 	url = https://github.com/clojure-emacs/nrepl.el.git
-[submodule "site-lisp/ac-nrepl"]
-	path = site-lisp/ac-nrepl
-	url = https://github.com/purcell/ac-nrepl.git
-[submodule "site-lisp/auto-complete"]
-	path = site-lisp/auto-complete
-	url = https://github.com/auto-complete/auto-complete.git
-[submodule "site-lisp/popup"]
-	path = site-lisp/popup
-	url = https://github.com/auto-complete/popup-el.git
-[submodule "site-lisp/clojure-mode"]
-	path = site-lisp/clojure-mode
-	url = https://@github.com/technomancy/clojure-mode.git
-[submodule "site-lisp/web-mode"]
-	path = site-lisp/web-mode
-	url = https://github.com/fxbois/web-mode
-[submodule "site-lisp/browse-kill-ring"]
-	path = site-lisp/browse-kill-ring
-	url = https://github.com/browse-kill-ring/browse-kill-ring.git
 [submodule "site-lisp/zenburn"]
 	path = site-lisp/zenburn
 	url = https://github.com/bbatsov/zenburn-emacs

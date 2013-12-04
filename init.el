@@ -59,13 +59,6 @@
 (add-hook 'clojure-mode-hook 'idle-highlight-mode)
 (add-hook 'emacs-lisp-mode 'idle-highlight-mode)
 
-;; Paredit
-(require 'paredit)
-(add-hook 'lisp-mode-hook 'paredit-mode)
-(add-hook 'emacs-lisp-mode-hook 'paredit-mode)
-(add-hook 'clojure-mode-hook 'paredit-mode)
-(add-hook 'nrepl-mode-hook 'enable-paredit-mode)
-
 ;; Markdown mode
 (autoload 'markdown-mode "markdown-mode.el" "Major mode for editing Markdown files" t)
 (setq auto-mode-alist (cons '("\\.markdown" . markdown-mode) auto-mode-alist))
@@ -78,22 +71,29 @@
 ;; Dont like trailing whitespaces
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-(dolist (file '("jp-autocomplete.el"
+(dolist (file '(;;"jp-autocomplete.el"
 		"jp-ace-jump-mode.el"
 		"jp-erc.el"
 		"jp-multiple-cursors.el"
 		"jp-html"
 		"jp-lnf.el"
-		"jp-clojure.el"
-		"jp-nrepl.el"
+                ;;"jp-snippets.el"
+		;;"jp-clojure.el"
+	;;	"jp-nrepl.el"
                 "jp-magit.el"
                 "jp-osx.el"
-                "jp-snippets.el"
-                "jp-rgrep.el"))
+                "jp-rgrep.el"
+                "jp-paredit.el"
+                "jp-helm.el"))
   (load (concat user-emacs-directory file)))
 
-(setq ispell-program-name "aspell")
+;; Misc - put this stuff somewhere
 
+;; Visual line mode
+(add-hook 'markdown-mode-hook 'visual-line-mode)
+(add-hook 'org-mode-hook 'visual-line-mode)
+
+(setq ispell-program-name "aspell")
 (setq ispell-dictionary-alist
       '((nil
 	 "[A-Za-z]" "[^A-Za-z]" "[']" nil
@@ -101,13 +101,7 @@
 	  "/Library/Application Support/cocoAspell/aspell6-en-6.0-0")
 	 nil iso-8859-1)))
 
-(setq-default markdown-command "pandoc -S -s --self-contained -f markdown -t html5 ")
-
 (add-hook 'markdown-mode-hook 'flyspell-mode)
-
-;; Visual line mode
-(add-hook 'markdown-mode-hook 'visual-line-mode)
-(add-hook 'org-mode-hook 'visual-line-mode)
 
 (defun recompile-init ()
   "Byte-compile all your dotfiles again."

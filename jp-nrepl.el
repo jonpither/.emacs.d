@@ -1,18 +1,18 @@
-(setq nrepl-history-file "~/.emacs.d/nrepl-history")
+(setq nrepl-history-file "~/.emacs.d/cider-history")
 
-(setq nrepl-popup-stacktraces nil)
-(setq nrepl-popup-stacktraces-in-repl t)
+(setq cider-popup-stacktraces nil)
+(setq cider-repl-popup-stacktraces t)
 
 ;; eldoc
-(add-hook 'nrepl-interaction-mode-hook
+(add-hook 'cider-mode-hook
   'nrepl-turn-on-eldoc-mode)
 
 (defun write-fn-into-buffer (m)
   (interactive)
-  (with-current-buffer (nrepl-current-repl-buffer)
-    (nrepl-replace-input (format "(%s)" m))))
+  (with-current-buffer (cider-current-repl-buffer)
+    (cider-repl--replace-input (format "(%s)" m))))
 
-(defun nrepl-ido-fns-form (ns)
+(defun cider-ido-fns-form (ns)
   "Construct a Clojure form for reading fns using supplied NS."
   (format "(let [fn-pred (fn [[k v]] (and (fn? (.get v)) (not (re-find #\"clojure.\" (str v)))))]
               (sort
@@ -22,28 +22,27 @@
                            (ns-interns '%s)
                            (ns-refers '%s))))))" ns ns))
 
-(defun nrepl-ido-read-fns (ns ido-callback)
+(defun cider-ido-read-fns (ns ido-callback)
   "Perform ido read fns in NS using supplied IDO-CALLBACK."
   ;; Have to be stateful =(
-  (setq nrepl-ido-ns ns)
+  (setq cider-ido-ns ns)
   (interactive)
-  (nrepl-send-string (nrepl-ido-fns-form nrepl-ido-ns)
-                     (nrepl-ido-read-var-handler ido-callback (current-buffer))
-                     nrepl-buffer-ns
-                     (nrepl-current-tooling-session)))
+  (cider-tooling-eval (cider-ido-fns-form cider-ido-ns)
+                      (cider-ido-read-var-handler ido-callback (current-buffer))
+                      nrepl-buffer-ns))
 
-(defun nrepl-load-fn-into-repl-buffer ()
-  "Browse functions available in current nREPL buffer using ido.
+(defun cider-load-fn-into-repl-buffer ()
+  "Browse functions available in current repl buffer using ido.
 Once selected, the name of the fn will appear in the repl buffer in parens
 ready to call."
   (interactive)
-  (nrepl-ido-read-fns (nrepl-current-ns) 'write-fn-into-buffer))
+  (cider-ido-read-fns (cider-current-ns) 'write-fn-into-buffer))
 
-(global-set-key (kbd "C-c n j") 'nrepl-jack-in)
-(global-set-key (kbd "C-c n c") 'nrepl-close)
-(global-set-key (kbd "C-c n q") 'nrepl-quit)
-(global-set-key (kbd "C-c n d") 'nrepl-current-connection-info)
-(global-set-key (kbd "C-c n n") 'nrepl-rotate-connection)
-(global-set-key (kbd "C-c n p") 'nrepl-toggle-pretty-printing)
-(global-set-key (kbd "C-c n s") 'nrepl-switch-to-repl-buffer)
-(global-set-key (kbd "C-c n f") 'nrepl-load-fn-into-repl-buffer)
+(global-set-key (kbd "C-c n j") 'cider-jack-in)
+(global-set-key (kbd "C-c n c") 'cider-close)
+(global-set-key (kbd "C-c n q") 'cider-quit)
+(global-set-key (kbd "C-c n d") 'cider-current-connection-info)
+(global-set-key (kbd "C-c n n") 'cider-rotate-connection)
+(global-set-key (kbd "C-c n p") 'cider-toggle-pretty-printing)
+(global-set-key (kbd "C-c n s") 'cider-switch-to-repl-buffer)
+(global-set-key (kbd "C-c n f") 'cider-load-fn-into-repl-buffer)
