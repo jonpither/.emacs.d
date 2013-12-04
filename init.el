@@ -71,15 +71,15 @@
 ;; Dont like trailing whitespaces
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-(dolist (file '(;;"jp-autocomplete.el"
+(dolist (file '("jp-autocomplete.el"
 		"jp-ace-jump-mode.el"
 		"jp-erc.el"
 		"jp-multiple-cursors.el"
 		"jp-html"
 		"jp-lnf.el"
-                ;;"jp-snippets.el"
-		;;"jp-clojure.el"
-	;;	"jp-nrepl.el"
+                "jp-snippets.el"
+		"jp-clojure.el"
+		"jp-nrepl.el"
                 "jp-magit.el"
                 "jp-osx.el"
                 "jp-rgrep.el"
