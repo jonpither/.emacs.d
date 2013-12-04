@@ -4,8 +4,7 @@
 (setq cider-repl-popup-stacktraces t)
 
 ;; eldoc
-(add-hook 'cider-mode-hook
-  'nrepl-turn-on-eldoc-mode)
+(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 
 (defun write-fn-into-buffer (m)
   (interactive)
