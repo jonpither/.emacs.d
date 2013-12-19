@@ -9,3 +9,8 @@ swank
 nrepl-history
 /.erc-auth
 history
+.cask
+/bookmarks
+/places
+/target/repl-port
+/tramp
