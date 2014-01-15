@@ -6,3 +6,5 @@
   (exec-path-from-shell-initialize))
 
 (setq mac-option-modifier 'super)
+
+(global-set-key (kbd "s-3") '(lambda () (interactive) (insert "#")))
