@@ -20,10 +20,6 @@
 
 (require 'better-defaults)
 
-;; Key Bindings
-(global-set-key (kbd "<f11>") 'ns-toggle-fullscreen)
-(global-set-key (kbd "C-c C-f") 'rgrep)
-
 (savehist-mode t)
 
 ;; http://castyour.net/keep-emacs-pooping-files-about
@@ -80,7 +76,7 @@
 		"jp-nrepl.el"
                 "jp-magit.el"
                 "jp-osx.el"
-                "jp-rgrep.el"
+                "jp-projectile.el"
                 "jp-paredit.el"
                 "jp-helm.el"))
   (load (concat user-emacs-directory file)))
