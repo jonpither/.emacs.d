@@ -20,50 +20,10 @@
 
 (require 'better-defaults)
 
-(setq default-directory "~/")
-
-(savehist-mode t)
-
-;; http://castyour.net/keep-emacs-pooping-files-about
-(setq backup-inhibited 'anyvaluebutnil)
-
-;; Refresh buffers when files change
-(global-auto-revert-mode t)
-
-;; C-c l/r to restore windows
-(winner-mode 1)
-
-;; undo-tree
-(require 'undo-tree)
-(global-undo-tree-mode)
-
-;; Shows the kill ring
-(require 'browse-kill-ring)
-(browse-kill-ring-default-keybindings)
-
-;; expand region
-(require 'expand-region)
-(global-set-key (kbd "C-'") 'er/expand-region)
-
-;; hl-sexp
-(require 'hl-sexp)
-(add-hook 'clojure-mode-hook 'hl-sexp-mode)
-(add-hook 'lisp-mode-hook 'hl-sexp-mode)
-(add-hook 'emacs-lisp-mode-hook 'hl-sexp-mode)
-
-;; highlight symbols
-(add-hook 'clojure-mode-hook 'idle-highlight-mode)
-(add-hook 'emacs-lisp-mode 'idle-highlight-mode)
-
-
-;; Js2 mode for JS
-(require 'js2-mode)
-(setq auto-mode-alist (cons '("\\.js" . js2-mode) auto-mode-alist))
-
-;; Dont like trailing whitespaces
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-(dolist (file '("jp-autocomplete.el"
+(dolist (file '("jp-defaults.el"
+                "jp-editor.el"
+                "jp-js.el"
+                "jp-autocomplete.el"
 		"jp-ace-jump-mode.el"
 		"jp-erc.el"
 		"jp-multiple-cursors.el"
@@ -80,5 +40,3 @@
                 "jp-text.el"
                 "jp-defuns.el"))
   (load (concat user-emacs-directory file)))
-
-;; todo, do what preludes with a modules dir and auto loading
