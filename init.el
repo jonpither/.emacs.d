@@ -55,10 +55,6 @@
 (add-hook 'clojure-mode-hook 'idle-highlight-mode)
 (add-hook 'emacs-lisp-mode 'idle-highlight-mode)
 
-;; Markdown mode
-(autoload 'markdown-mode "markdown-mode.el" "Major mode for editing Markdown files" t)
-(setq auto-mode-alist (cons '("\\.markdown" . markdown-mode) auto-mode-alist))
-(setq auto-mode-alist (cons '("\\.md" . markdown-mode) auto-mode-alist))
 
 ;; Js2 mode for JS
 (require 'js2-mode)
@@ -80,26 +76,9 @@
                 "jp-osx.el"
                 "jp-projectile.el"
                 "jp-paredit.el"
-                "jp-helm.el"))
+                "jp-helm.el"
+                "jp-text.el"
+                "jp-defuns.el"))
   (load (concat user-emacs-directory file)))
 
-;; Misc - put this stuff somewhere
-
-;; Visual line mode
-(add-hook 'markdown-mode-hook 'visual-line-mode)
-(add-hook 'org-mode-hook 'visual-line-mode)
-
-(setq ispell-program-name "aspell")
-(setq ispell-dictionary-alist
-      '((nil
-	 "[A-Za-z]" "[^A-Za-z]" "[']" nil
-	 ("-B" "-d" "english" "--dict-dir"
-	  "/Library/Application Support/cocoAspell/aspell6-en-6.0-0")
-	 nil iso-8859-1)))
-
-(add-hook 'markdown-mode-hook 'flyspell-mode)
-
-(defun recompile-init ()
-  "Byte-compile all your dotfiles again."
-  (interactive)
-  (byte-recompile-directory user-emacs-directory 0))
+;; todo, do what preludes with a modules dir and auto loading
