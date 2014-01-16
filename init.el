@@ -20,6 +20,8 @@
 
 (require 'better-defaults)
 
+(setq default-directory "~/")
+
 (savehist-mode t)
 
 ;; http://castyour.net/keep-emacs-pooping-files-about
