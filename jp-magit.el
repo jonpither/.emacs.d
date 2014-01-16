@@ -3,6 +3,9 @@
 
 (require 'magit)
 
+;; See http://stackoverflow.com/questions/18856047/emacs-magit-commit-opens-new-emacs-client
+(set-variable 'magit-emacsclient-executable "/usr/local/Cellar/emacs/24.3/bin/emacsclient")
+
 ;; Magit colouring, starker
 (set-face-background 'magit-item-highlight "#121212")
 (set-face-background 'diff-file-header "#121212")
