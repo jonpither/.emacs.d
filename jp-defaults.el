@@ -11,3 +11,8 @@
 
 ;; C-c l/r to restore windows
 (winner-mode 1)
+
+;; flx-ido is a nicer ido interface
+(require 'flx-ido)
+(flx-ido-mode 1)
+(setq ido-use-faces nil)
