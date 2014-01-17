@@ -1,1 +1,1 @@
-This is my portable .emacs.d, including ELPA installed packages.
+This is my portable .emacs.d, including MELPA installed packages.
