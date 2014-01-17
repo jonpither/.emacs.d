@@ -11,14 +11,6 @@
 (setq ac-use-menu-map t)
 (setq ac-quick-help-delay 1)
 
-;; ac-slime
-;; (require 'ac-slime)
-;; (add-hook 'slime-mode-hook 'set-up-slime-ac)
-;; (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
-;; (eval-after-load "auto-complete"
-;;   '(add-to-list 'ac-modes 'slime-repl-mode))
-
-
 ;; ac-nrepl setup
 (require 'cider)
 (require 'cider-repl)
