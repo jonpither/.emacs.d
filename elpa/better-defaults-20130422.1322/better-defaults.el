@@ -4,7 +4,8 @@
 
 ;; Author: Phil Hagelberg
 ;; URL: https://github.com/technomancy/better-defaults
-;; Version: 0.1.2
+;; Version: 20130422.1322
+;; X-Original-Version: 0.1.2
 ;; Created: 2013-04-16
 ;; Keywords: convenience
 
