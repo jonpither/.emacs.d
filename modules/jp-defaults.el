@@ -1,3 +1,5 @@
+(require 'better-defaults)
+
 (setq default-directory "~/")
 
 ;; Save stuff like minibuffer history
