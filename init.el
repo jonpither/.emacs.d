@@ -1,6 +1,8 @@
-;; ----------------------
+;; ------------------------------------------------------------
 ;; Better dead than smeg.
-;; ----------------------
+;;
+;; Taking some inspiration from bbatsov's prelude for structure
+;; ------------------------------------------------------------
 
 (add-to-list 'load-path user-emacs-directory)
 
@@ -20,23 +22,8 @@
 
 (require 'better-defaults)
 
-(dolist (file '("jp-defaults.el"
-                "jp-editor.el"
-                "jp-js.el"
-                "jp-autocomplete.el"
-		"jp-ace-jump-mode.el"
-		"jp-erc.el"
-		"jp-multiple-cursors.el"
-		"jp-html"
-		"jp-lnf.el"
-                "jp-snippets.el"
-		"jp-clojure.el"
-		"jp-nrepl.el"
-                "jp-magit.el"
-                "jp-osx.el"
-                "jp-projectile.el"
-                "jp-paredit.el"
-                "jp-helm.el"
-                "jp-text.el"
-                "jp-defuns.el"))
-  (load (concat user-emacs-directory file)))
+(defvar modules-dir (expand-file-name  "modules" user-emacs-directory)
+  "This directory houses all of the built-in Prelude modules.")
+
+(message "Loading modules in %s..." modules-dir)
+(mapc 'load (directory-files modules-dir 't "^[^#].*el$"))
