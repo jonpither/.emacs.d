@@ -1,9 +1,8 @@
 (defvar mode-line-symbols
   '((clojure-mode . "λ")
-    (emacs-lisp-mode . "E-L")
+    (emacs-lisp-mode . "EL")
     (paredit-mode . " (P)")
-    (undo-tree-mode . " U-T")
-    (eldoc-mode . " El-D")))
+    (undo-tree-mode . " U-T")))
 
 (defun clean-mode-line ()
   (interactive)

@@ -18,7 +18,6 @@
 
 ;; show time
 (setq display-time-24hr-format t)
-(setq display-time-load-average t)
 (display-time)
 
 ;; y/n hassle
