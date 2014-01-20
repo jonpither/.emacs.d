@@ -14,4 +14,4 @@
   "This directory houses all of the built-in Prelude modules.")
 
 (message "Loading modules in %s..." modules-dir)
-(mapc 'load (directory-files modules-dir 't "^[^#].*el$"))
+(mapc 'load (directory-files modules-dir 't "^[^#]*el$"))
