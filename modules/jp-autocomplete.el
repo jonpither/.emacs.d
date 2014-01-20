@@ -28,5 +28,3 @@
 
 (add-hook 'cider-mode-hook 'set-auto-complete-as-completion-at-point-function)
 (add-hook 'cider-repl-mode-hook 'set-auto-complete-as-completion-at-point-function)
-
-(define-key cider-repl-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc)

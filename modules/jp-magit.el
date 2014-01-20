@@ -40,6 +40,3 @@
 
 ;; Git messenger
 (require 'git-messenger)
-(global-set-key (kbd "C-x v p") #'git-messenger:popup-message)
-(global-set-key (kbd "C-x v f") 'magit-file-log)
-(global-set-key (kbd "C-x g") 'magit-status)

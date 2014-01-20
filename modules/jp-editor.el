@@ -31,5 +31,3 @@
 (require 'recentf)
 (setq recentf-max-menu-items 25)
 (recentf-mode 1)
-
-(global-set-key (kbd "s-r") 'prelude-recentf-ido-find-file)

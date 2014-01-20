@@ -22,9 +22,3 @@
 
 ;; y/n hassle
 (fset 'yes-or-no-p 'y-or-n-p)
-
-;; http://whattheemacsd.com/key-bindings.el-03.html
-(global-set-key (kbd "M-j")
-            (lambda ()
-                  (interactive)
-                  (join-line -1)))
