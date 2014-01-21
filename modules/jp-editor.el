@@ -31,3 +31,7 @@
 (require 'recentf)
 (setq recentf-max-menu-items 25)
 (recentf-mode 1)
+
+;; They are pretty after all
+(require 'rainbow-delimiters)
+(global-rainbow-delimiters-mode)
