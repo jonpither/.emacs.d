@@ -37,6 +37,8 @@
                                   (interactive)
                                   (join-line -1)))
 
+    (define-key map (kbd "C-x r v") 'list-register)
+
     map)
   "Keymap for JP mode.")
 

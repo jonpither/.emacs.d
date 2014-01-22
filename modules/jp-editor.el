@@ -35,3 +35,5 @@
 ;; They are pretty after all
 (require 'rainbow-delimiters)
 (global-rainbow-delimiters-mode)
+
+(require 'list-register)
