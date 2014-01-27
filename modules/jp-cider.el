@@ -9,14 +9,11 @@
 
 (define-key cider-repl-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc)
 
-(setq cider-known-endpoints '(("localhost" "127.0.0.1:60611")))
+(setq cider-known-endpoints '("localhost 127.0.0.1:60611"))
 
 (defun foo ()
   (interactive)
   (let* ((endpoint
-          (ido-completing-read "Destination: "
-                               (mapcar (lambda (label-endpoint)
-                                         (concat (car label-endpoint) " " (cadr label-endpoint)))
-                                       cider-known-endpoints)))
+          (ido-completing-read "Destination: " cider-known-endpoints))
          (ip-port (split-string (cadr (split-string endpoint " ")) "\\:")))
     (cider (car ip-port) (string-to-number (cadr ip-port)))))
