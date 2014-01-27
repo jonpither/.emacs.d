@@ -24,6 +24,7 @@
     (define-key map (kbd "C-c n p") 'cider-toggle-pretty-printing)
     (define-key map (kbd "C-c n s") 'cider-switch-to-repl-buffer)
     (define-key map (kbd "C-c n f") 'cider-load-fn-into-repl-buffer)
+    (define-key map (kbd "C-c n r") 'cider-connect-to-known-endpoint)
 
     ;; Projectile:
     (define-key map [?\s-p] 'projectile-switch-project)

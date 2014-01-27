@@ -9,9 +9,12 @@
 
 (define-key cider-repl-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc)
 
-(setq cider-known-endpoints '("localhost 127.0.0.1:60611"))
+(defcustom cider-known-endpoints nil
+  "Specify a custom endpoint."
+  :type 'alist
+  :group 'cider)
 
-(defun foo ()
+(defun cider-connect-to-known-endpoint ()
   (interactive)
   (let* ((endpoint
           (ido-completing-read "Destination: " cider-known-endpoints))
