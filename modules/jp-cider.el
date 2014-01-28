@@ -16,7 +16,8 @@
 
 (defun cider-connect-to-known-endpoint ()
   (interactive)
-  (let* ((endpoint
-          (ido-completing-read "Destination: " cider-known-endpoints))
-         (ip-port (split-string (cadr (split-string endpoint " ")) "\\:")))
+  (let* ((endpoint (split-string
+                    (ido-completing-read "Destination: " cider-known-endpoints)))
+         (ip-port (split-string (if (= (length endpoint) 1)
+                                    (car endpoint) (cadr endpoint)) "\\:")))
     (cider (car ip-port) (string-to-number (cadr ip-port)))))
