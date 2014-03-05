@@ -16,10 +16,8 @@
     (define-key map (kbd "C-c C-<") 'mc/mark-all-like-this)
 
     ;; Cider Stuff:
-    (define-key map (kbd "C-c n j") 'cider-jack-in)
     (define-key map (kbd "C-c n c") 'nrepl-close)
     (define-key map (kbd "C-c n q") 'cider-quit)
-    (define-key map (kbd "C-c n d") 'cider-current-connection-info)
     (define-key map (kbd "C-c n n") 'cider-rotate-connection)
     (define-key map (kbd "C-c n p") 'cider-toggle-pretty-printing)
     (define-key map (kbd "C-c n s") 'cider-switch-to-repl-buffer)
