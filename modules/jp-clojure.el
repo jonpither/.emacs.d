@@ -25,3 +25,10 @@
                      (0 (progn (compose-region (match-beginning 1)
                                                (match-end 1) "λ")
                                nil))))))
+
+(require 'clj-refactor)
+(add-hook 'clojure-mode-hook (lambda ()
+                               (clj-refactor-mode 1)
+                               (cljr-add-keybindings-with-prefix "s-0")
+                               ;; insert keybinding setup here
+                               ))
