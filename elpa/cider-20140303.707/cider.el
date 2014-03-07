@@ -1,7 +1,7 @@
-;;; cider.el --- Clojure Integrated Development Environment and REPL
+;;; cider.el --- Clojure Integrated Development Environment and REPL -*- lexical-binding: t -*-
 
-;; Copyright © 2012-2013 Tim King, Phil Hagelberg
-;; Copyright © 2013 Bozhidar Batsov, Hugo Duncan, Steve Purcell
+;; Copyright © 2012-2014 Tim King, Phil Hagelberg
+;; Copyright © 2013-2014 Bozhidar Batsov, Hugo Duncan, Steve Purcell
 ;;
 ;; Author: Tim King <kingtim@gmail.com>
 ;;         Phil Hagelberg <technomancy@gmail.com>
@@ -9,7 +9,7 @@
 ;;         Hugo Duncan <hugo@hugoduncan.org>
 ;;         Steve Purcell <steve@sanityinc.com>
 ;; URL: http://www.github.com/clojure-emacs/cider
-;; Version: 0.5.0-cvs
+;; Version: 0.6.0-cvs
 ;; Package-Requires: ((clojure-mode "2.0.0") (cl-lib "0.3") (dash "2.4.1") (pkg-info "0.4"))
 ;; Keywords: languages, clojure, cider
 
@@ -57,12 +57,33 @@
   :prefix "cider-"
   :group 'applications)
 
+(require 'pkg-info)
+
 (require 'cider-client)
-(require 'cider-version)
 (require 'cider-interaction)
 (require 'cider-eldoc)
 (require 'cider-repl)
 (require 'cider-mode)
+
+(defvar cider-version "0.6-snapshot"
+  "Fallback version used when it cannot be extracted automatically.
+Normally it won't be used, unless `pkg-info' fails to extract the
+version from the CIDER package or library.")
+
+(defcustom cider-known-endpoints nil
+  "Specify a list of custom endpoints where each endpoint is a list.
+For example: '((\"label\" \"host\" \"port\")).
+The label is optional so that '(\"host\" \"port\") will suffice.
+This variable is used by the CIDER command."
+  :type 'list
+  :group 'cider)
+
+;;;###autoload
+(defun cider-version ()
+  "Display CIDER's version."
+  (interactive)
+  (let ((version (pkg-info-version-info 'cider)))
+    (message "CIDER %s" version)))
 
 ;;;###autoload
 (defun cider-jack-in (&optional prompt-project)
@@ -91,12 +112,35 @@ start the server."
           (setq nrepl-project-dir project-dir))
         (message "Starting nREPL server...")))))
 
+(defun cider-known-endpoint-candidates ()
+  "Known endpoint candidates for establishing an nREPL connection.
+A default will be included consisting of `nrepl-default-host' and
+`nrepl-default-port'."
+  (-distinct
+   (mapcar (lambda (endpoint)
+             (mapconcat 'identity endpoint " "))
+           (cons (list (nrepl-current-host) (nrepl-default-port))
+                 cider-known-endpoints))))
+
+(defun cider-select-known-endpoint ()
+  "Select an endpoint from known endpoints.
+The returned endpoint has the label removed."
+  (let ((selected-endpoint (split-string
+                            (ido-completing-read
+                             "Host: " (cider-known-endpoint-candidates)))))
+    (if (= 3 (length selected-endpoint))
+        (cdr selected-endpoint)
+      selected-endpoint)))
+
 ;;;###autoload
 (defun cider (host port)
   "Connect to an nREPL server identified by HOST and PORT."
-  (interactive (list (read-string "Host: " (nrepl-current-host) nil (nrepl-current-host))
-                     (string-to-number (let ((port (nrepl-default-port)))
-                                         (read-string "Port: " port nil port)))))
+  (interactive (let ((known-endpoint (when cider-known-endpoints
+                                       (cider-select-known-endpoint))))
+                 (list (or (car known-endpoint)
+                           (read-string "Host: " (nrepl-current-host) nil (nrepl-current-host)))
+                       (string-to-number (let ((port (or (cadr known-endpoint) (nrepl-default-port))))
+                                           (read-string "Port: " port nil port))))))
   (setq cider-current-clojure-buffer (current-buffer))
   (when (nrepl-check-for-repl-buffer `(,host ,port) nil)
     (nrepl-connect host port)))

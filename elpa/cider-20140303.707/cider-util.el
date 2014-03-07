@@ -1,7 +1,7 @@
-;;; cider-util.el --- Common utility functions that don't belong anywhere else
+;;; cider-util.el --- Common utility functions that don't belong anywhere else -*- lexical-binding: t -*-
 
-;; Copyright © 2012-2013 Tim King, Phil Hagelberg
-;; Copyright © 2013 Bozhidar Batsov, Hugo Duncan, Steve Purcell
+;; Copyright © 2012-2014 Tim King, Phil Hagelberg
+;; Copyright © 2013-2014 Bozhidar Batsov, Hugo Duncan, Steve Purcell
 ;;
 ;; Author: Tim King <kingtim@gmail.com>
 ;;         Phil Hagelberg <technomancy@gmail.com>
@@ -70,6 +70,10 @@ buffer-local wherever it is set."
     (clojure-mode)
     (font-lock-fontify-buffer)
     (buffer-string)))
+
+(defun cider-format-pprint-eval (form)
+  "Return a string of Clojure code that will eval and pretty-print FORM."
+  (format "(let [x %s] (clojure.pprint/pprint x) x)" form))
 
 (provide 'cider-util)
 
