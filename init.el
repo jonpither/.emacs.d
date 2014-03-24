@@ -24,13 +24,14 @@
 
 ;; TODO make work like prelude, my vendor stuff isn't proper yet
 ;; Load vendor packages
-(dolist (f (directory-files vendor-dir))
-  (let ((name (expand-file-name f vendor-dir)))
-    (when (and (file-directory-p name)
-               (not (equal f ".."))
-               (not (equal f ".")))
-      (message "Loading vendor package %s" name)
-      (mapc 'load (directory-files name 't "^[^#]*el$")))))
+(when (file-exists-p vendor-dir)
+  (dolist (f (directory-files vendor-dir))
+    (let ((name (expand-file-name f vendor-dir)))
+      (when (and (file-directory-p name)
+                 (not (equal f ".."))
+                 (not (equal f ".")))
+        (message "Loading vendor package %s" name)
+        (mapc 'load (directory-files name 't "^[^#]*el$"))))))
 
 (require 'jp-mode)
 (jp-global-mode 1)
