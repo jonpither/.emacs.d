@@ -10,4 +10,6 @@
 (global-set-key (kbd "s-3") '(lambda () (interactive) (insert "#")))
 
 ;; See http://stackoverflow.com/questions/18856047/emacs-magit-commit-opens-new-emacs-client
-(set-variable 'magit-emacsclient-executable "/usr/local/Cellar/emacs/24.3/bin/emacsclient")
+
+(when (eq 'darwin system-type)
+      (set-variable 'magit-emacsclient-executable "/usr/local/Cellar/emacs/24.3/bin/emacsclient"))
