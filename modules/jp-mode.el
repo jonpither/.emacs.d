@@ -11,9 +11,12 @@
     (define-key map (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
 
     ;; Multiple Cursors
-    (define-key map (kbd "C-c .") 'mc/mark-next-like-this)
-    (define-key map (kbd "C-c ,") 'mc/mark-previous-like-this)
-    (define-key map (kbd "C-c M-.") 'mc/mark-all-like-this)
+    (define-key map (kbd "C->") 'mc/mark-next-like-this)
+    (define-key map (kbd "C-<") 'mc/mark-previous-like-this)
+    (define-key map (kbd "C-c C-<") 'mc/mark-all-like-this)
+
+    ;; Expand Regions
+    (global-set-key (kbd "C-'") 'er/expand-region)
 
     ;; Cider Stuff:
     (define-key map (kbd "C-c n p") 'cider-toggle-pretty-printing)
