@@ -29,6 +29,6 @@
 (require 'clj-refactor)
 (add-hook 'clojure-mode-hook (lambda ()
                                (clj-refactor-mode 1)
-                               (cljr-add-keybindings-with-prefix "s-0")
+                               (cljr-add-keybindings-with-prefix "C-c o")
                                ;; insert keybinding setup here
                                ))
