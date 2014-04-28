@@ -36,7 +36,7 @@
 
     (define-key map (kbd "C-x r v") 'list-register)
 
-    (define-key map (kbd "RET") 'newline-and-indent)
+;;    (define-key map (kbd "RET") 'newline-and-indent)
 
     map)
   "Keymap for JP mode.")
