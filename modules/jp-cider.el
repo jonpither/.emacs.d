@@ -10,6 +10,4 @@
 (define-key cider-repl-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc)
 
 ;; CIDER SPY
-(setq cider-spy-auto-refresh t)
-(setq cider-spy-hub-endpoint '("localhost" 7771))
 (setq cider-spy-hub-alias "Awesomedude")
