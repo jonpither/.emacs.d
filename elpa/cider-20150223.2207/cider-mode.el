@@ -31,11 +31,12 @@
 ;;; Code:
 
 (require 'cider-interaction)
+(require 'cider-eldoc)
 
 ;;;###autoload
 (defcustom cider-mode-line
   '(:eval (format " cider[%s]" (cider-current-ns)))
-  "Mode line ligher for `cider-mode'.
+  "Mode line lighter for `cider-mode'.
 
 The value of this variable is a mode line template as in
 `mode-line-format'.  See Info Node `(elisp)Mode Line Format' for
@@ -74,7 +75,8 @@ entirely."
     (define-key map (kbd "C-c M-m") 'cider-macroexpand-all)
     (define-key map (kbd "C-c M-n") 'cider-repl-set-ns)
     (define-key map (kbd "C-c M-i") 'cider-inspect)
-    (define-key map (kbd "C-c M-t") 'cider-toggle-trace)
+    (define-key map (kbd "C-c M-t v") 'cider-toggle-trace-var)
+    (define-key map (kbd "C-c M-t n") 'cider-toggle-trace-ns)
     (define-key map (kbd "C-c C-z") 'cider-switch-to-repl-buffer)
     (define-key map (kbd "C-c M-o") 'cider-find-and-clear-repl-buffer)
     (define-key map (kbd "C-c C-k") 'cider-load-buffer)
@@ -128,7 +130,7 @@ entirely."
         ["Toggle REPL Pretty Print" cider-repl-toggle-pretty-printing]
         ["Clear REPL" cider-find-and-clear-repl-buffer]
         ["Refresh loaded code" cider-refresh]
-        ["Interrupt" cider-interrupt]
+        ["Interrupt evaluation" cider-interrupt]
         ["Quit" cider-quit]
         ["Restart" cider-restart]
         "--"
@@ -148,9 +150,10 @@ entirely."
   nil
   cider-mode-line
   cider-mode-map
+  (cider-eldoc-setup)
   (make-local-variable 'completion-at-point-functions)
   (add-to-list 'completion-at-point-functions
-               'cider-complete-at-point))
+               #'cider-complete-at-point))
 
 (provide 'cider-mode)
 

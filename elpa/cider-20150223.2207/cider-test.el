@@ -270,7 +270,7 @@ With the actual value, the outermost '(not ...)' s-expression is removed."
   "Emit into BUFFER report detail for the TEST assertion."
   (with-current-buffer buffer
     (nrepl-dbind-response test (var context type message expected actual error)
-      (cider-propertize-region (cdr test)
+      (cider-propertize-region (cider-intern-keys (cdr test))
         (cider-insert (capitalize type) (cider-test-type-face type) nil " in ")
         (cider-insert var 'font-lock-function-name-face t)
         (when context  (cider-insert context 'font-lock-doc-face t))
@@ -380,10 +380,13 @@ With the actual value, the outermost '(not ...)' s-expression is removed."
 ;; its corresponding test namespace. To provide this, we need to map the
 ;; relationship between those namespaces.
 
-(defvar cider-test-infer-test-ns 'cider-test-default-test-ns-fn
+(defcustom cider-test-infer-test-ns 'cider-test-default-test-ns-fn
   "Function to infer the test namespace for NS.
 The default implementation uses the simple Leiningen convention of appending
-'-test' to the namespace name.")
+'-test' to the namespace name."
+  :type 'symbol
+  :group 'cider-test
+  :package-version '(cider . "0.7.0"))
 
 (defun cider-test-default-test-ns-fn (ns)
   "For a NS, return the test namespace, which may be the argument itself.
@@ -432,12 +435,17 @@ displayed. When test failures/errors occur, their sources are highlighted."
       (cider-test-execute ns t)
     (message "No namespace to retest")))
 
-(defun cider-test-run-tests ()
-  "Run all tests for the current Clojure source or test report context."
-  (interactive)
-  (-if-let (ns (or (funcall cider-test-infer-test-ns (clojure-find-ns))
-                   (when (eq major-mode 'cider-test-report-mode)
-                     cider-test-last-test-ns)))
+(defun cider-test-run-tests (suppress-inference)
+  "Run all tests for the current Clojure source or test report context.
+
+With a prefix arg SUPPRESS-INFERENCE it will try to run the tests in the
+current ns."
+  (interactive "P")
+  (-if-let (ns (if suppress-inference
+                   (clojure-find-ns)
+                 (or (funcall cider-test-infer-test-ns (clojure-find-ns))
+                     (when (eq major-mode 'cider-test-report-mode)
+                      cider-test-last-test-ns))))
       (cider-test-execute ns nil)
     (message "No namespace to test in current context")))
 

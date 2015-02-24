@@ -12,4 +12,4 @@
 ;; See http://stackoverflow.com/questions/18856047/emacs-magit-commit-opens-new-emacs-client
 
 (when (eq 'darwin system-type)
-      (set-variable 'magit-emacsclient-executable "/usr/local/Cellar/emacs/HEAD/bin/emacsclient"))
+      (set-variable 'magit-emacsclient-executable "/usr/local/Cellar/emacs/24.4/bin/emacsclient"))

@@ -43,16 +43,16 @@
 (defvar cider-doc-map
   (let (cider-doc-map)
     (define-prefix-command 'cider-doc-map)
-    (define-key cider-doc-map (kbd "a") 'cider-apropos)
-    (define-key cider-doc-map (kbd "C-a") 'cider-apropos)
-    (define-key cider-doc-map (kbd "A") 'cider-apropos-documentation)
-    (define-key cider-doc-map (kbd "d") 'cider-doc)
-    (define-key cider-doc-map (kbd "C-d") 'cider-doc)
-    (define-key cider-doc-map (kbd "g") 'cider-grimoire)
-    (define-key cider-doc-map (kbd "C-g") 'cider-grimoire)
-    (define-key cider-doc-map (kbd "h") 'cider-grimoire-web)
-    (define-key cider-doc-map (kbd "j") 'cider-javadoc)
-    (define-key cider-doc-map (kbd "C-j") 'cider-javadoc)
+    (define-key cider-doc-map (kbd "a") #'cider-apropos)
+    (define-key cider-doc-map (kbd "C-a") #'cider-apropos)
+    (define-key cider-doc-map (kbd "A") #'cider-apropos-documentation)
+    (define-key cider-doc-map (kbd "d") #'cider-doc)
+    (define-key cider-doc-map (kbd "C-d") #'cider-doc)
+    (define-key cider-doc-map (kbd "g") #'cider-grimoire)
+    (define-key cider-doc-map (kbd "C-g") #'cider-grimoire)
+    (define-key cider-doc-map (kbd "h") #'cider-grimoire-web)
+    (define-key cider-doc-map (kbd "j") #'cider-javadoc)
+    (define-key cider-doc-map (kbd "C-j") #'cider-javadoc)
     cider-doc-map)
   "CIDER documentation keymap.")
 
@@ -125,20 +125,29 @@
 
 (defvar cider-docview-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map "q" 'cider-popup-buffer-quit-function)
-    (define-key map "j" 'cider-docview-javadoc)
-    (define-key map "s" 'cider-docview-source)
-    (define-key map (kbd "<backtab>") 'backward-button)
-    (define-key map (kbd "TAB") 'forward-button)
+    (define-key map "q" #'cider-popup-buffer-quit-function)
+    (define-key map "g" #'cider-docview-grimoire)
+    (define-key map "G" #'cider-docview-grimoire-web)
+    (define-key map "j" #'cider-docview-javadoc)
+    (define-key map "s" #'cider-docview-source)
+    (define-key map (kbd "<backtab>") #'backward-button)
+    (define-key map (kbd "TAB") #'forward-button)
     (easy-menu-define cider-docview-mode-menu map
       "Menu for CIDER's doc mode"
       `("CiderDoc"
+        ["Look up in Grimoire" cider-docview-grimoire]
+        ["Look up in Grimoire (browser)" cider-docview-grimoire-web]
         ["JavaDoc in browser" cider-docview-javadoc]
         ["Jump to source" cider-docview-source]
         "--"
         ["Quit" cider-popup-buffer-quit-function]
         ))
     map))
+
+(defvar cider-docview-symbol)
+(defvar cider-docview-javadoc-url)
+(defvar cider-docview-file)
+(defvar cider-docview-line)
 
 (define-derived-mode cider-docview-mode special-mode "Doc"
   "Major mode for displaying CIDER documentation
@@ -171,6 +180,18 @@
                          (cider-find-file cider-docview-file))))
         (cider-jump-to buffer (cons cider-docview-line nil) nil))
     (message "No source location for %s" cider-docview-symbol)))
+
+(defun cider-docview-grimoire ()
+  (interactive)
+  (if cider-buffer-ns
+      (cider-grimoire-lookup cider-docview-symbol)
+    (message "%s cannot be looked up on Grimoire" cider-docview-symbol)))
+
+(defun cider-docview-grimoire-web ()
+  (interactive)
+  (if cider-buffer-ns
+      (cider-grimoire-web-lookup cider-docview-symbol)
+    (message "%s cannot be looked up on Grimoire" cider-docview-symbol)))
 
 
 ;;; Font Lock and Formatting
@@ -345,9 +366,11 @@ Tables are marked to be ignored by line wrap."
     (let ((javadoc (nrepl-dict-get info "javadoc"))
           (file (nrepl-dict-get info "file"))
           (line (nrepl-dict-get info "line"))
+          (ns (nrepl-dict-get info "ns"))
           (inhibit-read-only t))
       (cider-docview-mode)
 
+      (setq-local cider-buffer-ns ns)
       (setq-local cider-docview-symbol symbol)
       (setq-local cider-docview-javadoc-url javadoc)
       (setq-local cider-docview-file file)
