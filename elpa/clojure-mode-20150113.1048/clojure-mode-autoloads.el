@@ -3,7 +3,7 @@
 ;;; Code:
 (add-to-list 'load-path (or (file-name-directory #$) (car load-path)))
 
-;;;### (autoloads nil "clojure-mode" "clojure-mode.el" (21549 30178
+;;;### (autoloads nil "clojure-mode" "clojure-mode.el" (21740 45786
 ;;;;;;  0 0))
 ;;; Generated autoloads from clojure-mode.el
 
@@ -15,6 +15,8 @@ Major mode for editing Clojure code.
 \(fn)" t nil)
 
 (add-to-list 'auto-mode-alist '("\\.\\(clj[sx]?\\|dtm\\|edn\\)\\'" . clojure-mode))
+
+(add-to-list 'auto-mode-alist '("\\`build.boot\\'" . clojure-mode))
 
 ;;;***
 
