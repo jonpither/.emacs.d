@@ -5,6 +5,8 @@
 
 (setq nrepl-host "localhost")
 
+(setq cider-prompt-for-symbol nil)
+
 ;; eldoc
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 
