@@ -10,7 +10,7 @@
 ;;         Steve Purcell <steve@sanityinc.com>
 ;; Maintainer: Bozhidar Batsov <bozhidar@batsov.com>
 ;; URL: http://www.github.com/clojure-emacs/cider
-;; Version: 0.10.0-cvs
+;; Version: 0.10.0
 ;; Package-Requires: ((emacs "24.3") (clojure-mode "5.0.0") (pkg-info "0.4") (queue "0.1.1") (spinner "1.4") (seq "1.9"))
 ;; Keywords: languages, clojure, cider
 
@@ -36,15 +36,15 @@
 
 ;;; Installation:
 
-;; Available as a package in marmalade-repo.org and melpa.org
+;; Available as a package in melpa.org and stable.melpa.org
 
 ;; (add-to-list 'package-archives
-;;              '("marmalade" . "http://marmalade-repo.org/packages/"))
+;;              '("melpa" . "https://melpa.org/packages/"))
 ;;
 ;; or
 ;;
 ;; (add-to-list 'package-archives
-;;              '("melpa" . "http://melpa.org/packages/") t)
+;;              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 ;;
 ;; M-x package-install cider
 
@@ -78,7 +78,7 @@
 
 (require 'seq)
 
-(defconst cider-version "0.10.0-snapshot"
+(defconst cider-version "0.10.0"
   "Fallback version used when it cannot be extracted automatically.
 Normally it won't be used, unless `pkg-info' fails to extract the
 version from the CIDER package or library.")
@@ -261,11 +261,11 @@ be reused."
                                 (and project-directory
                                      (equal project-directory nrepl-project-dir)))))
                         repl-buffers)))
-      (if (and (get-buffer-process exact-buff)
-               (y-or-n-p (format "REPL buffer already exists (%s).  \
+      (if (get-buffer-process exact-buff)
+          (when (y-or-n-p (format "REPL buffer already exists (%s).  \
 Do you really want to create a new one? "
-                                 exact-buff)))
-          (or (cider--select-zombie-buffer repl-buffers) 'new)
+                                  exact-buff))
+            'new)
         exact-buff)
     (or (cider--select-zombie-buffer repl-buffers) 'new)))
 
@@ -471,24 +471,21 @@ In case `default-directory' is non-local we assume the command is available."
          (missing-ops (seq-remove (lambda (op) (nrepl-op-supported-p op current-connection))
                                   cider-required-nrepl-ops)))
     (when missing-ops
-      (cider-repl-emit-interactive-stderr
-       (format "WARNING: The following required nREPL ops are not supported: \n%s\nPlease, install (or update) cider-nrepl %s and restart CIDER"
-               (cider-string-join missing-ops " ")
-               (upcase cider-version))))))
+      (cider-repl-readme-warning "cider-nrepl-middleware"
+                                 "The following required nREPL ops are not supported: \n%s\nPlease, install (or update) cider-nrepl %s and restart CIDER"
+                                 (cider-string-join missing-ops " ")
+                                 (upcase cider-version)))))
 
 (defun cider--check-required-nrepl-version ()
   "Check whether we're using a compatible nREPL version."
-  (let ((nrepl-version (cider--nrepl-version)))
-    (if nrepl-version
-        (when (version< nrepl-version cider-required-nrepl-version)
-          (cider-repl-emit-interactive-stderr
-           (cider--readme-button
-            (format "WARNING: CIDER requires nREPL %s (or newer) to work properly"
-                    cider-required-nrepl-version)
-            "warning-saying-you-have-to-use-nrepl-027")))
-      (cider-repl-emit-interactive-stderr
-       (format "WARNING: Can't determine nREPL's version. Please, update nREPL to %s."
-               cider-required-nrepl-version)))))
+  (if-let ((nrepl-version (cider--nrepl-version)))
+      (when (version< nrepl-version cider-required-nrepl-version)
+        (cider-repl-readme-warning "warning-saying-you-have-to-use-nrepl-0212"
+                                   "CIDER requires nREPL %s (or newer) to work properly"
+                                   cider-required-nrepl-version))
+    (cider-repl-readme-warning "warning-saying-you-have-to-use-nrepl-0212"
+                               "Can't determine nREPL's version.\nPlease, update nREPL to %s."
+                               cider-required-nrepl-version)))
 
 (defun cider--check-middleware-compatibility-callback (buffer)
   "A callback to check if the middleware used is compatible with CIDER."
@@ -497,9 +494,10 @@ In case `default-directory' is non-local we assume the command is available."
    (lambda (_buffer result)
      (let ((middleware-version (read result)))
        (unless (and middleware-version (equal cider-version middleware-version))
-         (cider-repl-emit-interactive-stderr
-          (format "ERROR: CIDER's version (%s) does not match cider-nrepl's version (%s). Things will break!"
-                  cider-version middleware-version)))))
+         ;; FIXME: Add a proper readme section about this.
+         (cider-repl-readme-warning "cider-nrepl-middleware"
+                                    "CIDER's version (%s) does not match cider-nrepl's version (%s). Things will break!"
+                                    cider-version middleware-version))))
    '()
    '()
    '()))
@@ -530,6 +528,10 @@ buffer."
   (cider--check-middleware-compatibility)
   (cider--debug-init-connection)
   (cider--subscribe-repl-to-server-out)
+  (cider-nrepl-request:eval
+   "(try (require 'cider.nrepl.print-method)
+         (catch Throwable _ nil))"
+   #'ignore)
   (when cider-auto-mode
     (cider-enable-on-existing-clojure-buffers))
   (run-hooks 'cider-connected-hook))

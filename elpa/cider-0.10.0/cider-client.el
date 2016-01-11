@@ -28,6 +28,8 @@
 (require 'spinner)
 (require 'nrepl-client)
 (require 'cider-common)
+(require 'cider-util)
+(require 'clojure-mode)
 
 (require 'cider-compat)
 (require 'seq)
@@ -121,14 +123,18 @@ Also close associated REPL and server buffers."
 
 
 ;;; Current connection logic
-(defvar-local cider-repl-type nil
+(defvar-local cider-repl-type "clj"
   "The type of this REPL buffer, usually either \"clj\" or \"cljs\".")
 
-(defun cider-find-connection-buffer-for-project-directory (project-directory &optional all-connections)
-  "Return the most appropriate connection-buffer for the given PROJECT-DIRECTORY.
+(defun cider-find-connection-buffer-for-project-directory (&optional project-directory all-connections)
+  "Return the most appropriate connection-buffer for the current project.
+
 By order of preference, this is any connection whose directory matches
-PROJECT-DIRECTORY, followed by any connection whose directory is nil,
+`clojure-project-dir', followed by any connection whose directory is nil,
 followed by any connection at all.
+
+If PROJECT-DIRECTORY is provided act on that project instead.
+
 Only return nil if `cider-connections' is empty (there are no connections).
 
 If more than one connection satisfy a given level of preference, return the
@@ -140,7 +146,9 @@ precedence over other connections associated with the same project.
 
 If ALL-CONNECTIONS is non-nil, the return value is a list and all matching
 connections are returned, instead of just the most recent."
-  (let ((fn (if all-connections #'seq-filter #'seq-find)))
+  (when-let ((project-directory (or project-directory
+                                    (clojure-project-dir (cider-current-dir))))
+             (fn (if all-connections #'seq-filter #'seq-find)))
     (or (funcall fn (lambda (conn)
                       (when-let ((conn-proj-dir (with-current-buffer conn
                                                   nrepl-project-dir)))
@@ -194,31 +202,51 @@ such a link cannot be established automatically."
 A REPL is relevant if its `nrepl-project-dir' is compatible with the
 current directory (see `cider-find-connection-buffer-for-project-directory').
 If there is ambiguity, it is resolved by matching TYPE with the REPL
-type (Clojure or ClojureScript).  If TYPE is nil, it is derived from the
-file extension."
-  ;; Cleanup the connections list.
-  (cider-connections)
+type (Clojure or ClojureScript).  TYPE is a string, which when nil is derived
+from the file extension."
+  (cider-connections) ; Cleanup the connections list.
   (if (eq cider-request-dispatch 'dynamic)
       (cond
-       ((cider--in-connection-buffer-p) (current-buffer))
+       ((and (not type) (cider--in-connection-buffer-p)) (current-buffer))
        ((= 1 (length cider-connections)) (car cider-connections))
-       (t (let* ((project-directory (clojure-project-dir (cider-current-dir)))
-                 (repls (and project-directory
-                             (cider-find-connection-buffer-for-project-directory project-directory 'all))))
-            (if (= 1 (length repls))
+       (t (let ((project-connections
+                 (cider-find-connection-buffer-for-project-directory
+                  nil :all-connections)))
+            (if (= 1 (length project-connections))
                 ;; Only one match, just return it.
-                (car repls)
+                (car project-connections)
               ;; OW, find one matching the extension of current file.
               (let ((type (or type (file-name-extension (or (buffer-file-name) "")))))
                 (or (seq-find (lambda (conn)
-                                (equal (with-current-buffer conn
-                                         (or cider-repl-type "clj"))
-                                       type))
-                              (append repls cider-connections))
-                    (car repls)
+                                (equal (cider--connection-type conn) type))
+                              project-connections)
+                    (car project-connections)
                     (car cider-connections)))))))
     ;; TODO: Add logic to dispatch to a matching Clojure/ClojureScript REPL based on file type
     (car cider-connections)))
+
+(defun cider-other-connection (&optional connection)
+  "Return the first connection of another type than CONNECTION
+Only return connections in the same project or nil.
+CONNECTION defaults to `cider-current-connection'."
+  (let* ((connection (or connection (cider-current-connection)))
+         (connection-type (cider--connection-type connection))
+         (other (if (equal connection-type "clj")
+                    (cider-current-connection "cljs")
+                  (cider-current-connection "clj"))))
+    (unless (equal connection-type (cider--connection-type other))
+      other)))
+
+(defun cider-map-connections (function)
+  "Call FUNCTION once for each appropriate connection.
+The function is called with one argument, the connection buffer.
+The appropriate connections are found by inspecting the current buffer.  If
+the buffer is associated with a .cljc or .cljx file, BODY will be executed
+multiple times."
+  (if-let ((is-cljc (cider--cljc-or-cljx-buffer-p))
+           (other-connection (cider-other-connection)))
+      (mapc function (list (cider-current-connection) other-connection))
+    (funcall function (cider-current-connection))))
 
 
 ;;; Connection Browser
@@ -282,24 +310,29 @@ The connections buffer is determined by
       (cider-connections-buffer-mode)
       (display-buffer (current-buffer)))))
 
+(defun cider-client-name-repl-type (type)
+  "Return a human-readable name for a connection TYPE.
+TYPE can be any of the possible values of `cider-repl-type'."
+  (pcase type
+    ("clj" "Clojure")
+    ("cljs" "ClojureScript")
+    (_ "Unknown")))
+
 (defun cider--connection-pp (connection)
   "Print an nREPL CONNECTION to the current buffer."
   (let* ((buffer-read-only nil)
          (buffer (get-buffer connection))
          (endpoint (buffer-local-value 'nrepl-endpoint buffer)))
     (insert
-     (format "%s %-30s %-16s %5s   %s%s"
+     (format "%s %-30s %-16s %5s   %s"
              (if (equal connection (car cider-connections)) "*" " ")
              (buffer-name connection)
              (car endpoint)
              (prin1-to-string (cadr endpoint))
-             (or (cider--project-name
-                  (buffer-local-value 'nrepl-project-dir buffer))
-                 "")
              (with-current-buffer buffer
-               (if cider-repl-type
-                   (concat " " cider-repl-type)
-                 ""))))))
+               (if-let ((name (cider--project-name nrepl-project-dir)))
+                   (concat name " " (cider-client-name-repl-type cider-repl-type))
+                 (cider-client-name-repl-type cider-repl-type)))))))
 
 (defun cider--update-connections-display (ewoc connections)
   "Update the connections EWOC to show CONNECTIONS."
@@ -398,21 +431,26 @@ Signal an error if it is not supported."
   (unless (cider-nrepl-op-supported-p op)
     (error "Can't find nREPL middleware providing op \"%s\".  Please, install (or update) cider-nrepl %s and restart CIDER" op (upcase cider-version))))
 
-(defun cider-nrepl-send-request (request callback)
+(defun cider-nrepl-send-request (request callback &optional connection)
   "Send REQUEST and register response handler CALLBACK.
 REQUEST is a pair list of the form (\"op\" \"operation\" \"par1-name\"
 \"par1\" ... ).
-Return the id of the sent message."
-  (nrepl-send-request request callback (cider-current-connection)))
+If CONNECTION is provided dispatch to that connection instead of
+the current connection.
 
-(defun cider-nrepl-send-sync-request (request &optional abort-on-input)
+Return the id of the sent message."
+  (nrepl-send-request request callback (or connection (cider-current-connection))))
+
+(defun cider-nrepl-send-sync-request (request &optional connection abort-on-input)
   "Send REQUEST to the nREPL server synchronously.
 Hold till final \"done\" message has arrived and join all response messages
 of the same \"op\" that came along and return the accumulated response.
 If ABORT-ON-INPUT is non-nil, the function will return nil
 at the first sign of user input, so as not to hang the
 interface."
-  (nrepl-send-sync-request request (cider-current-connection) abort-on-input))
+  (nrepl-send-sync-request request
+                           (or connection (cider-current-connection))
+                           abort-on-input))
 
 (defun cider-nrepl-send-unhandled-request (request)
   "Send REQUEST to the nREPL server and ignore any responses.
@@ -499,12 +537,20 @@ Return the REPL buffer given by `cider-current-connection'.")
 
 (define-obsolete-function-alias 'nrepl-current-session 'cider-current-session "0.10")
 
+(defun cider-current-messages-buffer ()
+  "The nREPL messages buffer, matching the current connection's default session."
+  (format nrepl-message-buffer-name-template (cider-current-session)))
+
 (defun cider-current-tooling-session ()
   "Return the current tooling session."
   (with-current-buffer (cider-current-connection)
     nrepl-tooling-session))
 
 (define-obsolete-function-alias 'nrepl-current-tooling-session 'cider-current-tooling-session "0.10")
+
+(defun cider-current-tooling-messages-buffer ()
+  "The nREPL messages buffer, matching the current connection's tooling session."
+  (format nrepl-message-buffer-name-template (cider-current-tooling-session)))
 
 (defun cider--var-choice (var-info)
   "Prompt to choose from among multiple VAR-INFO candidates, if required.
@@ -572,23 +618,28 @@ thing at point."
 ;;; Requests
 
 (declare-function cider-load-file-handler "cider-interaction")
-(defun cider-request:load-file (file-contents file-path file-name &optional callback)
+(defun cider-request:load-file (file-contents file-path file-name &optional connection callback)
   "Perform the nREPL \"load-file\" op.
 FILE-CONTENTS, FILE-PATH and FILE-NAME are details of the file to be
-loaded. If CALLBACK is nil, use `cider-load-file-handler'."
+loaded.
+
+If CONNECTION is nil, use `cider-current-connection'.
+If CALLBACK is nil, use `cider-load-file-handler'."
   (cider-nrepl-send-request (list "op" "load-file"
                                   "session" (cider-current-session)
                                   "file" file-contents
                                   "file-path" file-path
                                   "file-name" file-name)
                             (or callback
-                                (cider-load-file-handler (current-buffer)))))
+                                (cider-load-file-handler (current-buffer)))
+                            connection))
 
 
 ;;; Sync Requests
 (defun cider-sync-request:apropos (query &optional search-ns docs-p privates-p case-sensitive-p)
   "Send \"apropos\" op with args SEARCH-NS, DOCS-P, PRIVATES-P, CASE-SENSITIVE-P."
   (thread-first `("op" "apropos"
+                  "session" ,(cider-current-session)
                   "ns" ,(cider-current-ns)
                   "query" ,query
                   ,@(when search-ns `("search-ns" ,search-ns))
@@ -613,7 +664,7 @@ loaded. If CALLBACK is nil, use `cider-load-file-handler'."
                                        "ns" (cider-current-ns)
                                        "symbol" str
                                        "context" context)
-                     (cider-nrepl-send-sync-request 'abort-on-input))))
+                     (cider-nrepl-send-sync-request nil 'abort-on-input))))
     (nrepl-dict-get dict "completions")))
 
 (defun cider-sync-request:info (symbol &optional class member)
@@ -637,7 +688,7 @@ loaded. If CALLBACK is nil, use `cider-load-file-handler'."
                                     ,@(when symbol (list "symbol" symbol))
                                     ,@(when class (list "class" class))
                                     ,@(when member (list "member" member)))
-                      (cider-nrepl-send-sync-request 'abort-on-input))))
+                      (cider-nrepl-send-sync-request nil 'abort-on-input))))
     (if (member "no-eldoc" (nrepl-dict-get eldoc "status"))
         nil
       eldoc)))
@@ -660,19 +711,22 @@ loaded. If CALLBACK is nil, use `cider-load-file-handler'."
 (defun cider-sync-request:resource (name)
   "Perform nREPL \"resource\" op with resource name NAME."
   (thread-first (list "op" "resource"
+                      "session" (cider-current-session)
                       "name" name)
     (cider-nrepl-send-sync-request)
     (nrepl-dict-get "resource-path")))
 
 (defun cider-sync-request:resources-list ()
   "Perform nREPL \"resource\" op with resource name NAME."
-  (thread-first (list "op" "resources-list")
+  (thread-first (list "op" "resources-list"
+                      "session" (cider-current-session))
     (cider-nrepl-send-sync-request)
     (nrepl-dict-get "resources-list")))
 
 (defun cider-sync-request:format-code (code)
   "Perform nREPL \"format-code\" op with CODE."
   (thread-first (list "op" "format-code"
+                      "session" (cider-current-session)
                       "code" code)
     (cider-nrepl-send-sync-request)
     (nrepl-dict-get "formatted-code")))
@@ -680,6 +734,7 @@ loaded. If CALLBACK is nil, use `cider-load-file-handler'."
 (defun cider-sync-request:format-edn (edn &optional right-margin)
   "Perform \"format-edn\" op with EDN and RIGHT-MARGIN."
   (let* ((response (thread-first (list "op" "format-edn"
+                                       "session" (cider-current-session)
                                        "edn" edn)
                      (append (and right-margin (list "right-margin" right-margin)))
                      (cider-nrepl-send-sync-request)))
@@ -769,9 +824,7 @@ Info contains project name, current REPL namespace, host:port
 endpoint and Clojure version."
   (with-current-buffer connection-buffer
     (format "%s%s@%s:%s (Java %s, Clojure %s, nREPL %s)"
-            (if cider-repl-type
-                (upcase (concat cider-repl-type " "))
-              "")
+            (upcase (concat cider-repl-type " "))
             (or (cider--project-name nrepl-project-dir) "<no project>")
             (car nrepl-endpoint)
             (cadr nrepl-endpoint)
@@ -783,9 +836,16 @@ endpoint and Clojure version."
   "Extract the essential properties of CONN-BUFFER."
   (with-current-buffer conn-buffer
     (list
+     :type cider-repl-type
      :host (car nrepl-endpoint)
      :port (cadr nrepl-endpoint)
      :project-dir nrepl-project-dir)))
+
+(defun cider--connection-type (conn-buffer)
+  "Get CONN-BUFFER's type.
+
+Return value matches `cider-repl-type'."
+  (plist-get (cider--connection-properties conn-buffer) :type))
 
 (defun cider--connection-host (conn-buffer)
   "Get CONN-BUFFER's host."

@@ -50,8 +50,7 @@ Info contains project name and host:port endpoint."
   (if-let ((current-connection (ignore-errors (cider-current-connection))))
       (with-current-buffer current-connection
         (concat
-         (when cider-repl-type
-           (concat cider-repl-type ":"))
+         (concat cider-repl-type ":")
          (when cider-mode-line-show-connection
            (format "%s@%s:%s"
                    (or (cider--project-name nrepl-project-dir) "<no project>")
@@ -86,15 +85,6 @@ entirely."
 `cider-switch-to-last-clojure-buffer' uses this variable to jump
 back to last Clojure source buffer.")
 
-(defcustom cider-switch-to-repl-command 'cider-switch-to-relevant-repl-buffer
-  "Select the command to be invoked when switching-to-repl.
-The default option is `cider-switch-to-relevant-repl-buffer'.  If
-you'd like to not use smart matching of repl buffer based on
-project directory, you can assign it to `cider-switch-to-current-repl-buffer'
-which will use the default REPL connection."
-  :type 'symbol
-  :group 'cider)
-
 (defun cider-remember-clojure-buffer (buffer)
   "Try to remember the BUFFER from which the user jumps.
 The BUFFER needs to be a Clojure buffer and current major mode needs
@@ -105,11 +95,6 @@ to jump back to the last Clojure source buffer."
                (derived-mode-p 'clojure-mode))
              (derived-mode-p 'cider-repl-mode))
     (setq cider-last-clojure-buffer buffer)))
-
-(defun cider-switch-to-repl-buffer (&optional arg)
-  "Invoke `cider-switch-to-repl-command'."
-  (interactive "P")
-  (funcall cider-switch-to-repl-command arg))
 
 (defun cider--switch-to-repl-buffer (repl-buffer &optional set-namespace)
   "Select the REPL-BUFFER, when possible in an existing window.
@@ -132,22 +117,7 @@ that of the namespace in the Clojure source buffer."
     (cider-remember-clojure-buffer buffer)
     (goto-char (point-max))))
 
-(defun cider-switch-to-default-repl-buffer (&optional set-namespace)
-  "Select the default REPL buffer, when possible in an existing window.
-
-Hint: You can use `display-buffer-reuse-frames' and
-`special-display-buffer-names' to customize the frame in which
-the buffer should appear.
-
-With a prefix argument SET-NAMESPACE, sets the namespace in the REPL buffer to
-that of the namespace in the Clojure source buffer."
-  (interactive "P")
-  (cider--switch-to-repl-buffer (cider-default-connection) set-namespace))
-
-(define-obsolete-function-alias 'cider-switch-to-current-repl-buffer
-  'cider-switch-to-default-repl-buffer "0.10")
-
-(defun cider-switch-to-relevant-repl-buffer (&optional set-namespace)
+(defun cider-switch-to-repl-buffer (&optional set-namespace)
   "Select the REPL buffer, when possible in an existing window.
 The buffer chosen is based on the file open in the current buffer.
 
@@ -170,7 +140,7 @@ of the namespace in the Clojure source buffer."
   "Load the current buffer into the relevant REPL buffer and switch to it."
   (interactive "P")
   (cider-load-buffer)
-  (cider-switch-to-relevant-repl-buffer set-namespace))
+  (cider-switch-to-repl-buffer set-namespace))
 
 (defun cider-switch-to-last-clojure-buffer ()
   "Switch to the last Clojure buffer.
@@ -186,13 +156,16 @@ Clojure buffer and the REPL buffer."
         (pop-to-buffer cider-last-clojure-buffer))
     (message "Don't know the original Clojure buffer")))
 
-(defun cider-find-and-clear-repl-buffer ()
+(defun cider-find-and-clear-repl-output (&optional clear-repl)
   "Find the current REPL buffer and clear it.
+With a prefix argument CLEAR-REPL the command clears the entire REPL buffer.
 Returns to the buffer in which the command was invoked."
-  (interactive)
+  (interactive "P")
   (let ((origin-buffer (current-buffer)))
     (switch-to-buffer (cider-current-repl-buffer))
-    (cider-repl-clear-buffer)
+    (if clear-repl
+        (cider-repl-clear-buffer)
+      (cider-repl-clear-output))
     (switch-to-buffer origin-buffer)))
 
 
@@ -226,7 +199,7 @@ Returns to the buffer in which the command was invoked."
     (define-key map (kbd "C-c M-t n") #'cider-toggle-trace-ns)
     (define-key map (kbd "C-c C-z") #'cider-switch-to-repl-buffer)
     (define-key map (kbd "C-c M-z") #'cider-load-buffer-and-switch-to-repl-buffer)
-    (define-key map (kbd "C-c M-o") #'cider-find-and-clear-repl-buffer)
+    (define-key map (kbd "C-c C-o") #'cider-find-and-clear-repl-output)
     (define-key map (kbd "C-c C-k") #'cider-load-buffer)
     (define-key map (kbd "C-c C-l") #'cider-load-file)
     (define-key map (kbd "C-c C-b") #'cider-interrupt)
@@ -283,9 +256,8 @@ Returns to the buffer in which the command was invoked."
         "--"
         ["Set ns" cider-repl-set-ns]
         ["Switch to REPL" cider-switch-to-repl-buffer]
-        ["Switch to Relevant REPL" cider-switch-to-relevant-repl-buffer]
         ["Toggle REPL Pretty Print" cider-repl-toggle-pretty-printing]
-        ["Clear REPL" cider-find-and-clear-repl-buffer]
+        ["Clear REPL output" cider-find-and-clear-repl-output]
         "--"
         ("nREPL"
          ["Describe session" cider-describe-nrepl-session]
@@ -306,13 +278,20 @@ Returns to the buffer in which the command was invoked."
 ;;; Dynamic indentation
 (defun cider--get-symbol-indent (symbol-name)
   "Return the indent metadata for SYMBOL-NAME in the current namespace."
-  (when-let ((indent
-              (nrepl-dict-get (cider-resolve-var (cider-current-ns) symbol-name)
-                              "indent")))
-    (let ((format (format ":indent metadata on ‘%s’ is unreadable! \nERROR: %%s"
-                          symbol-name)))
-      (with-demoted-errors format
-        (cider--deep-vector-to-list (read indent))))))
+  (let* ((ns (cider-current-ns))
+         (meta (cider-resolve-var ns symbol-name)))
+    (if-let ((indent (or (nrepl-dict-get meta "style/indent")
+                         (nrepl-dict-get meta "indent"))))
+        (let ((format (format ":indent metadata on ‘%s’ is unreadable! \nERROR: %%s"
+                              symbol-name)))
+          (with-demoted-errors format
+            (cider--deep-vector-to-list (read indent))))
+      ;; There's no indent metadata, but there might be a clojure-mode
+      ;; indent-spec with fully-qualified namespace.
+      (when (string-match cider-resolve--prefix-regexp symbol-name)
+        (when-let ((sym (intern-soft (replace-match (cider-resolve-alias ns (match-string 1 symbol-name))
+                                                    t t symbol-name 1))))
+          (get sym 'clojure-indent-function))))))
 
 
 ;;; Dynamic font locking
@@ -430,7 +409,8 @@ namespace itself."
   (interactive)
   (when cider-font-lock-dynamically
     (font-lock-remove-keywords nil cider--dynamic-font-lock-keywords)
-    (when-let ((symbols (cider-resolve-ns-symbols (or ns (cider-current-ns)))))
+    (when-let ((ns (or ns (cider-current-ns)))
+               (symbols (cider-resolve-ns-symbols ns)))
       (setq-local cider--dynamic-font-lock-keywords
                   (cider--compile-font-lock-keywords
                    symbols (cider-resolve-ns-symbols (cider-resolve-core-ns))))
@@ -535,18 +515,33 @@ before point."
 The local variables are stored in a list under the `cider-locals' text
 property."
   (lambda (beg end &rest rest)
-    (remove-text-properties beg end '(cider-locals nil cider-block-dynamic-font-lock nil))
-    (when cider-font-lock-dynamically
-      (save-excursion
-        (goto-char beg)
-        ;; If the inside of a `ns' form changed, reparse it from the start.
-        (when (and (not (bobp))
-                   (get-text-property (1- (point)) 'cider-block-dynamic-font-lock))
-          (ignore-errors (beginning-of-defun)))
-        (ignore-errors
-          (cider--parse-and-apply-locals
-           end (unless (bobp)
-                 (get-text-property (1- (point)) 'cider-locals))))))
+    (with-silent-modifications
+      (remove-text-properties beg end '(cider-locals nil cider-block-dynamic-font-lock nil))
+      (when cider-font-lock-dynamically
+        (save-excursion
+          (goto-char beg)
+          ;; If the inside of a `ns' form changed, reparse it from the start.
+          (when (and (not (bobp))
+                     (get-text-property (1- (point)) 'cider-block-dynamic-font-lock))
+            (ignore-errors (beginning-of-defun)))
+          (let ((locals-above (unless (bobp)
+                                (get-text-property (1- (point)) 'cider-locals))))
+            (save-excursion
+              ;; If there are locals above the current sexp, reapply them to the
+              ;; current sexp.
+              (when (and locals-above
+                         (condition-case nil
+                             (progn (up-list) t)
+                           (scan-error nil)))
+                (add-text-properties beg (point) `(cider-locals ,locals-above)))
+              ;; Extend the region being font-locked to include whole sexps.
+              (goto-char end)
+              (when (condition-case nil
+                        (progn (up-list) t)
+                      (scan-error nil))
+                (setq end (max end (point)))))
+            (ignore-errors
+              (cider--parse-and-apply-locals end locals-above))))))
     (apply func beg end rest)))
 
 
@@ -573,6 +568,12 @@ property."
               (cider--wrap-fontify-locals font-lock-fontify-region-function))
   (setq-local clojure-get-indent-function #'cider--get-symbol-indent)
   (setq next-error-function #'cider-jump-to-compilation-error))
+
+(defun cider-set-buffer-ns (ns)
+  "Set this buffer's namespace to NS and refresh font-locking."
+  (setq-local cider-buffer-ns ns)
+  (when (or cider-mode (derived-mode-p 'cider-repl-mode))
+    (cider-refresh-dynamic-font-lock ns)))
 
 (provide 'cider-mode)
 

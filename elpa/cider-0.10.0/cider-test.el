@@ -68,7 +68,6 @@
 
 
 ;;; Faces
-;; These are as defined in clojure-test-mode.
 
 (defface cider-test-failure-face
   '((((class color) (background light))
@@ -307,7 +306,7 @@ With the actual value, the outermost '(not ...)' s-expression is removed."
     (let ((inhibit-read-only t))
       (cider-test-report-mode)
       (cider-insert "Test Summary" 'bold t)
-      (cider-insert ns 'font-lock-function-name-face t "\n")
+      (cider-insert ns 'font-lock-type-face t "\n")
       (cider-test-render-summary buffer summary)
       (nrepl-dbind-response summary (fail error)
         (unless (zerop (+ fail error))
@@ -325,16 +324,17 @@ With the actual value, the outermost '(not ...)' s-expression is removed."
 
 ;;; Summary echo
 
-(defun cider-test-echo-summary (summary)
-  "Echo SUMMARY statistics for a test run."
+(defun cider-test-echo-summary (summary ns)
+  "Echo SUMMARY statistics for a test run of tests in NS."
   (nrepl-dbind-response summary (test fail error)
-    (message
-     (propertize
-      (format "Ran %s tests. %s failures, %s errors." test fail error)
-      'face (cond ((not (zerop error)) 'cider-test-error-face)
-                  ((not (zerop fail))  'cider-test-failure-face)
-                  (t                   'cider-test-success-face))))))
-
+    (message (propertize
+              "%sRan %d tests. %d failures, %d errors."
+              'face (cond ((not (zerop error)) 'cider-test-error-face)
+                          ((not (zerop fail))  'cider-test-failure-face)
+                          (t                   'cider-test-success-face)))
+             (concat (cider-propertize-ns ns)
+                     (propertize ": " 'face 'default))
+             test fail error)))
 
 ;;; Test definition highlighting
 ;; On receipt of test results, failing/erring test definitions are highlighted.
@@ -434,14 +434,14 @@ This uses the Leiningen convention of appending '-test' to the namespace name."
 Upon test completion, results are echoed and a test report is optionally
 displayed. When test failures/errors occur, their sources are highlighted."
   (cider-test-clear-highlights)
-  (message "Testing...")
+  (message "Running tests in %s..." (cider-propertize-ns ns))
   (cider-nrepl-send-request
    (list "ns" ns "op" (if retest "retest" "test")
          "tests" tests "session" (cider-current-session))
    (lambda (response)
      (nrepl-dbind-response response (summary results status out err)
        (cond ((member "namespace-not-found" status)
-              (message "No tests namespace: %s" ns))
+              (message "No tests namespace: %s" (cider-propertize-ns ns)))
              (out (cider-emit-interactive-eval-output out))
              (err (cider-emit-interactive-eval-err-output err))
              (results
@@ -449,13 +449,20 @@ displayed. When test failures/errors occur, their sources are highlighted."
                 (setq cider-test-last-test-ns ns)
                 (setq cider-test-last-results results)
                 (cider-test-highlight-problems ns results)
-                (cider-test-echo-summary summary)
-                (when (or (not (zerop (+ error fail)))
-                          cider-test-show-report-on-success)
-                  (cider-test-render-report
-                   (cider-popup-buffer cider-test-report-buffer
-                                       cider-auto-select-test-report-buffer)
-                   ns summary results)))))))))
+                (cider-test-echo-summary summary ns)
+                (if (or (not (zerop (+ error fail)))
+                        cider-test-show-report-on-success)
+                    (cider-test-render-report
+                     (cider-popup-buffer cider-test-report-buffer
+                                         cider-auto-select-test-report-buffer)
+                     ns summary results)
+                  (when (get-buffer cider-test-report-buffer)
+                    (with-current-buffer cider-test-report-buffer
+                      (let ((inhibit-read-only t))
+                        (erase-buffer)))
+                    (cider-test-render-report
+                     cider-test-report-buffer
+                     ns summary results))))))))))
 
 (defun cider-test-rerun-tests ()
   "Rerun failed and erring tests from the last tested namespace."
