@@ -24,6 +24,13 @@
 ;;                                                (match-end 1) "λ")
 ;;                                nil))))))
 
+(require 'clj-refactor)
+(add-hook 'clojure-mode-hook (lambda ()
+                               (clj-refactor-mode 1)
+                               (cljr-add-keybindings-with-prefix "C-c C-o")
+                               ;; insert keybinding setup here
+                               ))
+
 (require 'clojure-mode)
 
 (put-clojure-indent 'render 1)
