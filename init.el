@@ -10,10 +10,18 @@
 
 (require 'package)
 (add-to-list 'package-archives
-             '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/") t)
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (setq package-user-dir (concat user-emacs-directory "elpa"))
 
 (package-initialize)
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(require 'use-package)
+(setq use-package-always-ensure t
+      use-package-verbose t)
 
 (message "Loading modules in %s..." modules-dir)
 (mapc 'load (directory-files modules-dir 't "^[^#]*el$"))

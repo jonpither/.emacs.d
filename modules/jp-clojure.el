@@ -1,40 +1,27 @@
-;; Clojure mode for ClojureScript
-(add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
-(add-to-list 'auto-mode-alist '("\.dtm$" . clojure-mode))
+(use-package clojure-mode
+  :ensure t
+  :mode (("\\.clj\\'" . clojure-mode)
+         ("\\.dtm\\'" . clojure-mode))
+  :init
+  (add-hook 'clojure-mode-hook #'eldoc-mode)
+  :config
+  (put-clojure-indent 'render 1)
+  (put-clojure-indent 'render-state 1)
+  (put-clojure-indent 'init-state 1)
+  (put-clojure-indent 'will-mount 1)
+  (put-clojure-indent 'given 1))
 
-;;http://blog.jayfields.com/2013/05/emacs-lisp-font-lock-for-clojures.html?utm_source=dlvr.it&utm_medium=twitter
-;; (eval-after-load 'clojure-mode
-;;   '(font-lock-add-keywords
-;;     'clojure-mode `(("(\\(partial\\)[[:space:]]"
-;;                      (0 (progn (compose-region (match-beginning 1)
-;;                                                (match-end 1) "Ƥ")
-;;                                nil))))))
+(use-package cider
+  :defer 1
+  :config
+  (setq cider-prompt-for-symbol nil
+        cider-repl-history-file "~/.emacs.d/cider-history")
+  (bind-keys :map cider-repl-mode-map
+             ("C-c M-o" . cider-repl-clear-buffer)))
 
-;; (eval-after-load 'clojure-mode
-;;   '(font-lock-add-keywords
-;;     'clojure-mode `(("(\\(comp\\)[[:space:]]"
-;;                      (0 (progn (compose-region (match-beginning 1)
-;;                                                (match-end 1) "∘")
-;;                                nil))))))
+(use-package clj-refactor
+  :defer t
+  :ensure t
+  :diminish clj-refactor-mode
+  :config (cljr-add-keybindings-with-prefix "C-c C-o"))
 
-;; (eval-after-load 'clojure-mode
-;;   '(font-lock-add-keywords
-;;     'clojure-mode `(("(\\(fn\\)[\[[:space:]]"
-;;                      (0 (progn (compose-region (match-beginning 1)
-;;                                                (match-end 1) "λ")
-;;                                nil))))))
-
-(require 'clj-refactor)
-(add-hook 'clojure-mode-hook (lambda ()
-                               (clj-refactor-mode 1)
-                               (cljr-add-keybindings-with-prefix "C-c C-o")
-                               ;; insert keybinding setup here
-                               ))
-
-(require 'clojure-mode)
-
-(put-clojure-indent 'render 1)
-(put-clojure-indent 'render-state 1)
-(put-clojure-indent 'init-state 1)
-(put-clojure-indent 'will-mount 1)
-(put-clojure-indent 'given 1)
