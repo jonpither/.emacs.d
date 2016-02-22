@@ -3,15 +3,18 @@
 ;; ----------------------
 
 ;; undo-tree
-(require 'undo-tree)
-(global-undo-tree-mode)
+(use-package undo-tree
+  :diminish undo-tree-mode
+  :init (global-undo-tree-mode))
 
 ;; Shows the kill ring
-(require 'browse-kill-ring)
-(browse-kill-ring-default-keybindings)
+(use-package browse-kill-ring
+  :bind ("M-y" . browse-kill-ring))
 
 ;; expand region
-(require 'expand-region)
+(use-package expand-region
+  :ensure t
+  :bind ("C-'" . er/expand-region))
 
 ;; hl-sexp
 (require 'hl-sexp)

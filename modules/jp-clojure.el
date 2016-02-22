@@ -15,7 +15,8 @@
   :defer 1
   :config
   (setq cider-prompt-for-symbol nil
-        cider-repl-history-file "~/.emacs.d/cider-history")
+        cider-repl-history-file "~/.emacs.d/cider-history"
+        cider-repl-display-help-banner nil)
   (bind-keys :map cider-repl-mode-map
              ("C-c M-o" . cider-repl-clear-buffer)))
 
@@ -24,4 +25,3 @@
   :ensure t
   :diminish clj-refactor-mode
   :config (cljr-add-keybindings-with-prefix "C-c C-o"))
-
