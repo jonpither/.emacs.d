@@ -29,7 +29,7 @@
 
 (use-package hl-sexp
   :config
-  (global-h1-sexp-mode))
+  (global-hl-sexp-mode))
 
 (use-package idle-highlight-mode
   :config
