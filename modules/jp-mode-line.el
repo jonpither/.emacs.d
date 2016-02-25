@@ -16,6 +16,3 @@
                (setq mode-name mode-str)))))
 
 (add-hook 'after-change-major-mode-hook 'clean-mode-line)
-
-(add-hook 'projectile-mode-hook
-          (lambda () (setq projectile-mode-line-lighter " Proj")))
