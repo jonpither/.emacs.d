@@ -6,18 +6,6 @@
     (define-key map (kbd "C-x v f") 'magit-file-log)
     (define-key map (kbd "C-x g") 'magit-status)
 
-    ;; Ace Jump Mode:
-    (define-key map (kbd "C-c SPC") 'ace-jump-mode)
-    (define-key map (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
-
-    ;; Multiple Cursors
-    (define-key map (kbd "C->") 'mc/mark-next-like-this)
-    (define-key map (kbd "C-<") 'mc/mark-previous-like-this)
-    (define-key map (kbd "C-c C-<") 'mc/mark-all-like-this)
-
-    ;; Expand Regions
-    (global-set-key (kbd "C-'") 'er/expand-region)
-
     ;; Cider Stuff:
     (define-key map (kbd "C-c n p") 'cider-toggle-pretty-printing)
     (define-key map (kbd "C-c s") 'cider-spy-summary)

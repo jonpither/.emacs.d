@@ -7,6 +7,12 @@
   :diminish undo-tree-mode
   :init (global-undo-tree-mode))
 
+(use-package avy
+  :bind
+  (("M-g M-g" . avy-goto-line)
+   ("C-c SPC" . avy-goto-char)
+   ("C-." . avy-goto-char-2)))
+
 ;; Shows the kill ring
 (use-package browse-kill-ring
   :bind ("M-y" . browse-kill-ring))
@@ -16,26 +22,49 @@
   :ensure t
   :bind ("C-'" . er/expand-region))
 
-;; hl-sexp
-(require 'hl-sexp)
-(add-hook 'clojure-mode-hook 'hl-sexp-mode)
-(add-hook 'lisp-mode-hook 'hl-sexp-mode)
-(add-hook 'emacs-lisp-mode-hook 'hl-sexp-mode)
+(use-package multiple-cursors
+  :bind (("C->" . mc/mark-next-like-this)
+         ("C-<" . mc/mark-previous-like-this)
+         ("C-c C->" . mc/mark-all-like-this)))
 
-;; highlight symbols
-(add-hook 'clojure-mode-hook 'idle-highlight-mode)
-(add-hook 'emacs-lisp-mode 'idle-highlight-mode)
+(use-package hl-sexp
+  :config
+  (global-h1-sexp-mode))
+
+(use-package idle-highlight-mode
+  :config
+  (progn
+    (add-hook 'clojure-mode-hook 'idle-highlight-mode)
+    (add-hook 'emacs-lisp-mode 'idle-highlight-mode)))
 
 ;; Dont like trailing whitespaces
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; save recent files
-(require 'recentf)
-(setq recentf-max-menu-items 25)
-(recentf-mode 1)
+(use-package recentf
+  :config
+  (progn
+    (setq recentf-max-menu-items 25)
+    (recentf-mode 1)))
+
+(use-package smex
+  :bind (("M-x" . smex)
+         ("M-X" . smex-major-mode-commands)
+         ("C-c C-c M-x" . execute-extended-command)))
+
+;; Paredit
+(use-package paredit
+  :init
+  (add-hook 'lisp-mode-hook 'paredit-mode)
+  (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
+  (add-hook 'clojure-mode-hook 'paredit-mode)
+  (add-hook 'cider-repl-mode-hook 'enable-paredit-mode))
 
 ;; They are pretty after all
-(require 'rainbow-delimiters)
-(global-rainbow-delimiters-mode)
+(use-package rainbow-delimiters
+  :config
+  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
-(require 'list-register)
+(use-package list-register)
+
+(use-package markdown-mode)
