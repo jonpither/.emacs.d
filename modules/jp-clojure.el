@@ -1,15 +1,25 @@
 (use-package clojure-mode
   :ensure t
   :mode (("\\.clj\\'" . clojure-mode)
+         ("\\.cljc\\'" . clojure-mode)
+         ("\\.edn\\'" . clojure-mode)
          ("\\.dtm\\'" . clojure-mode))
   :init
   (add-hook 'clojure-mode-hook #'eldoc-mode)
   :config
-  (put-clojure-indent 'render 1)
-  (put-clojure-indent 'render-state 1)
-  (put-clojure-indent 'init-state 1)
-  (put-clojure-indent 'will-mount 1)
-  (put-clojure-indent 'given 1))
+  (define-clojure-indent
+    (render 1)
+    (render-state 1)
+    (init-state 1)
+    (will-mount 1)
+    (given 1)))
+
+(use-package clj-refactor
+  :defer t
+  :ensure t
+  :diminish clj-refactor-mode
+  :config
+  (cljr-add-keybindings-with-prefix "C-c C-o"))
 
 (use-package cider
   :defer 1
@@ -19,9 +29,3 @@
         cider-repl-display-help-banner nil)
   (bind-keys :map cider-repl-mode-map
              ("C-c M-o" . cider-repl-clear-buffer)))
-
-(use-package clj-refactor
-  :defer t
-  :ensure t
-  :diminish clj-refactor-mode
-  :config (cljr-add-keybindings-with-prefix "C-c C-o"))

@@ -20,7 +20,4 @@
 (setq display-time-24hr-format t)
 (display-time)
 
-;; y/n hassle
-(fset 'yes-or-no-p 'y-or-n-p)
-
 (setq scroll-conservatively 10000)

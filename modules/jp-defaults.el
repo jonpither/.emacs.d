@@ -1,4 +1,4 @@
-(require 'better-defaults)
+(use-package better-defaults)
 
 (setq default-directory "~/")
 
@@ -15,6 +15,9 @@
 (winner-mode 1)
 
 ;; flx-ido is a nicer ido interface
-(require 'flx-ido)
-(flx-ido-mode 1)
-(setq ido-use-faces nil)
+(use-package flx-ido
+  :init (flx-ido-mode 1)
+  :config (setq ido-use-faces nil))
+
+;; y/n hassle
+(fset 'yes-or-no-p 'y-or-n-p)
