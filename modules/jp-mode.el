@@ -1,3 +1,5 @@
+;; TODO KILL THIS MODE
+
 (defvar jp-mode-map
   (let ((map (make-sparse-keymap)))
 
