@@ -41,10 +41,12 @@
         (message "Loading vendor package %s" name)
         (mapc 'load (directory-files name 't "^[^#]*el$"))))))
 
+(require 'cider-spy)
+
 (require 'jp-mode)
 (jp-global-mode 1)
 
 (require 'org)
-(require 'ox-reveal)
+;;(require 'ox-reveal)
 
 (add-hook 'after-init-hook 'global-company-mode)
