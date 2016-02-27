@@ -68,3 +68,8 @@
 (use-package list-register)
 
 (use-package markdown-mode)
+
+(use-package company
+  :ensure t
+  :defer t
+  :config (global-company-mode))

@@ -21,3 +21,4 @@ history
 /.erc-auth.bak
 /jabber-avatar-cache/
 /smex-items
+/projectile.cache

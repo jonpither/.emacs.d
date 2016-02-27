@@ -48,5 +48,3 @@
 
 (require 'org)
 ;;(require 'ox-reveal)
-
-(add-hook 'after-init-hook 'global-company-mode)
