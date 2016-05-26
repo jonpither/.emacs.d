@@ -1,6 +1,6 @@
 *~
 *.elc
-elpa
+/elpa
 auto-save-list/*
 ac-comphist.dat
 url
@@ -22,3 +22,5 @@ history
 /jabber-avatar-cache/
 /smex-items
 /projectile.cache
+elpa
+elpa

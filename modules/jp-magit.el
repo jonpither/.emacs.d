@@ -2,16 +2,7 @@
 ;; https://github.com/magnars/.emacs.d/blob/master/setup-magit.el
 
 (use-package magit
-  ;; :config
-  ;; (progn
-
-  ;;   ;; Magit colouring, starker
-  ;;   (set-face-background 'magit-item-highlight "#121212")
-  ;;   (set-face-background 'diff-file-header "#121212")
-  ;;   (set-face-foreground 'diff-context "#666666")
-  ;;   (set-face-foreground 'diff-added "#00cc33")
-  ;;   (set-face-foreground 'diff-removed "#ff0000"))
-  )
+  :bind (("C-x g" . magit-status)))
 
 ;; Fullscreen magit status
 (defadvice magit-status (around magit-fullscreen activate)

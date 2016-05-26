@@ -21,3 +21,6 @@
 
 ;; y/n hassle
 (fset 'yes-or-no-p 'y-or-n-p)
+
+;; No to weird flickering
+(set 'visible-bell nil)

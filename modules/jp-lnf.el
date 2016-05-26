@@ -12,8 +12,6 @@
   (progn
     (color-theme-sanityinc-tomorrow-night)))
 
-(set-face-attribute 'hl-sexp-face nil :background "#2b2b2b")
-
 ;; Font size
 (set-face-attribute 'default nil :height 150)
 
@@ -32,3 +30,5 @@
 ;; Remove mode-line box
 (set-face-attribute 'mode-line nil :box nil)
 (set-face-attribute 'mode-line-inactive nil :box nil)
+
+(set-face-attribute 'hl-sexp-face nil :background "#2b2b2b")
