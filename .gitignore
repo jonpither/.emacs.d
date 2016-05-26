@@ -24,3 +24,5 @@ history
 /projectile.cache
 elpa
 elpa
+/ido.last
+session.*
