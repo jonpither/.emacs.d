@@ -13,7 +13,7 @@
     (color-theme-sanityinc-tomorrow-night)))
 
 ;; Font size
-(set-face-attribute 'default nil :height 150)
+(set-face-attribute 'default nil :height 80)
 
 ;; Scrolling
 (setq scroll-step 1)
