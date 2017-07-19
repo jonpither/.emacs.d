@@ -10,7 +10,9 @@
 
 (require 'package)
 (add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+             '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/") t
+;;             '("melpa" . "http://melpa.milkbox.net/packages/") t
+)
 (setq package-user-dir (concat user-emacs-directory "elpa"))
 
 (package-initialize)
@@ -41,6 +43,7 @@
         (message "Loading vendor package %s" name)
         (mapc 'load (directory-files name 't "^[^#]*el$"))))))
 
+
 ;;(require 'cider-spy)
 
 (require 'org)
@@ -51,16 +54,24 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(cider-boot-parameters "-C cider dev")
+ '(cider-inject-dependencies-at-jack-in t)
  '(custom-enabled-themes (quote (sanityinc-tomorrow-night)))
  '(custom-safe-themes
    (quote
     ("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" default)))
  '(package-selected-packages
    (quote
-    (projectile exec-path-from-shell magit color-theme-sanityinc-tomorrow js2-mode web-mode restclient feature-mode elisp-slime-nav company markdown-mode list-register rainbow-delimiters smex idle-highlight-mode hl-sexp expand-region browse-kill-ring avy undo-tree noflet flx-ido better-defaults clj-refactor clojure-mode use-package queue peg))))
+    (cider terraform-mode projectile exec-path-from-shell magit color-theme-sanityinc-tomorrow js2-mode web-mode restclient feature-mode elisp-slime-nav company markdown-mode list-register rainbow-delimiters smex idle-highlight-mode hl-sexp expand-region browse-kill-ring avy undo-tree noflet flx-ido better-defaults clj-refactor clojure-mode use-package queue peg)))
+ '(safe-local-variable-values
+   (quote
+    ((eval add-hook
+           (quote clojure-mode-hook)
+           (function cider-mode))
+     (cider-boot-parameters . "dev")))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(put 'upcase-region 'disabled nil)
