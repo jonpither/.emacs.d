@@ -47,7 +47,15 @@
 ;;(require 'cider-spy)
 
 (require 'org)
-;;(require 'ox-reveal)
+(use-package ox-reveal
+  :bind (("C-c r" . org-reveal-export-to-html)))
+(require 'ox-reveal)
+
+;; Display org todos on start
+(add-hook 'after-init-hook 'org-todo-list)
+
+;; TODO Put this stuff somewhere else
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
