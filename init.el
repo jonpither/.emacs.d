@@ -43,17 +43,6 @@
         (message "Loading vendor package %s" name)
         (mapc 'load (directory-files name 't "^[^#]*el$"))))))
 
-
-;;(require 'cider-spy)
-
-(require 'org)
-(use-package ox-reveal
-  :bind (("C-c r" . org-reveal-export-to-html)))
-(require 'ox-reveal)
-
-;; Display org todos on start
-(add-hook 'after-init-hook 'org-todo-list)
-
 ;; TODO Put this stuff somewhere else
 
 (custom-set-variables
