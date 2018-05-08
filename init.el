@@ -10,8 +10,8 @@
 
 (require 'package)
 (add-to-list 'package-archives
-             '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/") t
-;;             '("melpa" . "http://melpa.milkbox.net/packages/") t
+            '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/") t
+            ;;'("melpa" . "http://melpa.milkbox.net/packages/") t
 )
 (setq package-user-dir (concat user-emacs-directory "elpa"))
 
