@@ -43,6 +43,11 @@
         (message "Loading vendor package %s" name)
         (mapc 'load (directory-files name 't "^[^#]*el$"))))))
 
+
+;; Not ideal to place this here, but I have issues with company-mode
+;; and cider initiating nicely together
+(global-company-mode)
+
 ;; TODO Put this stuff somewhere else
 
 (custom-set-variables
@@ -61,7 +66,9 @@
     (cider terraform-mode projectile exec-path-from-shell magit color-theme-sanityinc-tomorrow js2-mode web-mode restclient feature-mode elisp-slime-nav company markdown-mode list-register rainbow-delimiters smex idle-highlight-mode hl-sexp expand-region browse-kill-ring avy undo-tree noflet flx-ido better-defaults clj-refactor clojure-mode use-package queue peg)))
  '(safe-local-variable-values
    (quote
-    ((eval add-hook
+    ((projectile-project-type . boot-clj)
+     (cider-boot-parameters . "cider dev")
+     (eval add-hook
            (quote clojure-mode-hook)
            (function cider-mode))
      (cider-boot-parameters . "dev")))))
