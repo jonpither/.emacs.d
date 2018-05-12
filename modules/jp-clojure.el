@@ -14,13 +14,13 @@
     (will-mount 1)
     (given 1)))
 
-;; (use-package clj-refactor
-;;   :defer t
-;;   :ensure t
-;;   :diminish clj-refactor-mode
-;;   :init (add-hook 'clojure-mode-hook (lambda () (clj-refactor-mode 1)))
-;;   :config
-;;   (cljr-add-keybindings-with-prefix "C-c C-o"))
+(use-package clj-refactor
+  :defer t
+  :ensure t
+  :diminish clj-refactor-mode
+  :init (add-hook 'clojure-mode-hook (lambda () (clj-refactor-mode 1)))
+  :config
+  (cljr-add-keybindings-with-prefix "C-c C-o"))
 
 (use-package cider
   :defer 1
