@@ -9,3 +9,6 @@
 ;; Display org todos on start
 (setq org-agenda-files '("~/org"))
 (add-hook 'after-init-hook 'org-todo-list)
+
+(setq org-lowest-priority ?E)
+(setq org-default-priority ?E)
