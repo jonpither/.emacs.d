@@ -1,4 +1,4 @@
-(use-package noflet)
+;; (use-package noflet)
 
 (defun recompile-init ()
   "Byte-compile all your dotfiles again."

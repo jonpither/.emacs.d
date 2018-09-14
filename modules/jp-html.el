@@ -1,7 +1,7 @@
 ;; would like to learn nxml-mode but it's a bit of a pain
 ;;(fset 'html-mode 'nxml-mode)
 
-(use-package restclient)
+;;(use-package restclient)
 
 ;; web-mode, see http://web-mode.org
 (use-package web-mode

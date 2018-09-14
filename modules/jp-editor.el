@@ -27,9 +27,9 @@
          ("C-<" . mc/mark-previous-like-this)
          ("C-c C->" . mc/mark-all-like-this)))
 
-(use-package hl-sexp
-  :config
-  (global-hl-sexp-mode))
+;; (use-package highlight-sexp
+;;   :config
+;;   (global-hl-sexp-mode))
 
 (use-package idle-highlight-mode
   :config
@@ -65,7 +65,7 @@
   :config
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
-(use-package list-register)
+;; (use-package list-register)
 
 (use-package markdown-mode)
 
