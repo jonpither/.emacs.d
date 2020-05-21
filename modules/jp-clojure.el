@@ -27,6 +27,7 @@
   :config
   (setq cider-prompt-for-symbol nil
         cider-repl-history-file "~/.emacs.d/cider-history"
-        cider-repl-display-help-banner nil)
+        cider-repl-display-help-banner nil
+        cider-save-file-on-load t)
   (bind-keys :map cider-repl-mode-map
              ("C-c M-o" . cider-repl-clear-buffer)))
