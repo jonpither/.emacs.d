@@ -40,11 +40,19 @@
 ;; Dont like trailing whitespaces
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+(defun ido-recentf-open ()
+  "Use `ido-completing-read' to \\[find-file] a recent file"
+  (interactive)
+  (if (find-file (ido-completing-read "Find recent file: " recentf-list))
+      (message "Opening file...")
+    (message "Aborting")))
+
 ;; save recent files
 (use-package recentf
   :config
   (progn
     (setq recentf-max-menu-items 25)
+    (global-set-key "\C-x\ \C-r" 'ido-recentf-open)
     (recentf-mode 1)))
 
 (use-package smex
