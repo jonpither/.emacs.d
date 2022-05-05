@@ -31,11 +31,11 @@
 ;;   :config
 ;;   (global-hl-sexp-mode))
 
-(use-package idle-highlight-mode
-  :config
-  (progn
-    (add-hook 'clojure-mode-hook 'idle-highlight-mode)
-    (add-hook 'emacs-lisp-mode 'idle-highlight-mode)))
+;; (use-package idle-highlight-mode
+;;   :config
+;;   (progn
+;;     (add-hook 'clojure-mode-hook 'idle-highlight-mode)
+;;     (add-hook 'emacs-lisp-mode 'idle-highlight-mode)))
 
 ;; Dont like trailing whitespaces
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
